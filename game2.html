@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="game.css" type="text/css">
+    <title>game</title>
+</head>
+<body>
+    <table id='table'>
+        <tr id='1'>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+        </tr>
+        <tr id='2'>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+        </tr>
+        <tr id='3'>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+        </tr>
+        <tr id='4'>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+        </tr>
+        <tr id='5'>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+        </tr>
+        <tr id='6'>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+        </tr>
+        <tr id='7'>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+        </tr>
+        <tr id='8'>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+            <td class='pixel'></td>
+        </tr>
+    </table>
+    <script>
+        let pixels = document.querySelectorAll('.pixel');
+        let px =  Array.from(pixels);
+        let queue = 1;
+        let table = document.getElementById('table');
+        let current = 'red';
+        let opposite = 'blue';
+        for (let pixel of pixels){
+                pixel.onclick = function(){
+                    let n = px.findIndex(function (val) {
+                        return val === pixel;
+                    })
+                let first = px[n-9];
+                let second = px[n-8];
+                let third = px[n-7]; 
+                let fourth = px[n+1];
+                let fifth = px[n+9];
+                let sixth = px[n+8];                   
+                let seventh = px[n+7]; 
+                let eigth = px[n-1];
+                let thirdPixel1 = px[n-18];
+                let thirdPixel2 = px[n-16];
+                let thirdPixel3 = px[n-14]; 
+                let thirdPixel4 = px[n+2];
+                let thirdPixel5 = px[n+18];
+                let thirdPixel6 = px[n+16];
+                let thirdPixel7 = px[n+14]; 
+                let thirdPixel8 = px[n-2];
+                
+                function check1(){
+                    if(thirdPixel1.style.backgroundColor === current){
+                            first.style.backgroundColor = current;
+                            return;
+                    }
+                    if(n-18===8||n-18===16||n-18===24||n-18===32||n-18===40){
+                        return;
+                    }
+                    if(n-27>=0){
+                            if (px[n-27].style.backgroundColor === current&&thirdPixel1.style.backgroundColor === opposite){
+                                thirdPixel1.style.backgroundColor = current;
+                                first.style.backgroundColor = current;
+                                return;
+                            }
+                    }
+                    if(n-27===8||n-27===16||n-27===24||n-27===32){
+                        return;
+                    }
+                    if(n-36>=0){
+                            if (px[n-36].style.backgroundColor === current&&thirdPixel1.style.backgroundColor === opposite&&px[n-27].style.backgroundColor === opposite){
+                                thirdPixel1.style.backgroundColor = current;
+                                px[n-27].style.backgroundColor = current;
+                                first.style.backgroundColor = current;
+                                return;
+                            }
+                        }
+                    if(n-36===8||n-36===16||n-36===24){
+                        return;
+                    }
+                    if(n-45>=0){
+                        if (px[n-45].style.backgroundColor === current&&thirdPixel1.style.backgroundColor === opposite&&px[n-27].style.backgroundColor === opposite&&px[n-36].style.backgroundColor === opposite){
+                            thirdPixel1.style.backgroundColor = current;
+                            px[n-27].style.backgroundColor = current;
+                            px[n-36].style.backgroundColor = current;
+                            first.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    if(n-45===8||n-45===16){
+                        return;
+                    }
+                    if(n-54>=0){
+                        if (px[n-54].style.backgroundColor === current&&thirdPixel1.style.backgroundColor === opposite&&px[n-27].style.backgroundColor === opposite&&px[n-36].style.backgroundColor === opposite&&px[n-45].style.backgroundColor === opposite){
+                            thirdPixel1.style.backgroundColor = current;
+                            px[n-27].style.backgroundColor = current;
+                            px[n-45].style.backgroundColor = current;
+                            px[n-36].style.backgroundColor = current;
+                            first.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    if(n-54===8){
+                        return;
+                    }
+                    if(n-63>=0){
+                        if (px[n-63].style.backgroundColor === current&&thirdPixel1.style.backgroundColor === opposite&&px[n-27].style.backgroundColor === opposite&&px[n-36].style.backgroundColor === opposite&&px[n-45].style.backgroundColor === opposite&&px[n-54].style.backgroundColor === opposite){
+                            thirdPixel1.style.backgroundColor = current;
+                            px[n-27].style.backgroundColor = current;
+                            px[n-45].style.backgroundColor = current;
+                            px[n-36].style.backgroundColor = current;
+                            px[n-54].style.backgroundColor = current;
+                            first.style.backgroundColor = current;
+                            return;
+                            }
+                        }              
+                }
+
+                function check2(){
+                    if(thirdPixel2.style.backgroundColor === current){
+                            second.style.backgroundColor = current;
+                            return;
+                    }
+                    if(n-24>=0){
+                            if (px[n-24].style.backgroundColor === current&&thirdPixel2.style.backgroundColor === opposite){
+                                thirdPixel2.style.backgroundColor = current;
+                                second.style.backgroundColor = current;
+                                return;
+                            }
+                    }
+                    if(n-32>=0){
+                            if (px[n-32].style.backgroundColor === current&&thirdPixel2.style.backgroundColor === opposite&&px[n-24].style.backgroundColor === opposite){
+                                thirdPixel2.style.backgroundColor = current;
+                                px[n-24].style.backgroundColor = current;
+                                second.style.backgroundColor = current;
+                                return;
+                            }
+                        }
+                    if(n-40>=0){
+                        if (px[n-40].style.backgroundColor === current&&thirdPixel2.style.backgroundColor === opposite&&px[n-24].style.backgroundColor === opposite&&px[n-32].style.backgroundColor === opposite){
+                            thirdPixel2.style.backgroundColor = current;
+                            px[n-24].style.backgroundColor = current;
+                            px[n-32].style.backgroundColor = current;
+                            second.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    if(n-48>=0){
+                        if (px[n-48].style.backgroundColor === current&&thirdPixel2.style.backgroundColor === opposite&&px[n-24].style.backgroundColor === opposite&&px[n-32].style.backgroundColor === opposite&&px[n-40].style.backgroundColor === opposite){
+                            thirdPixel2.style.backgroundColor = current;
+                            px[n-24].style.backgroundColor = current;
+                            px[n-40].style.backgroundColor = current;
+                            px[n-32].style.backgroundColor = current;
+                            second.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    if(n-56>=0){
+                        if (px[n-56].style.backgroundColor === current&&thirdPixel2.style.backgroundColor === opposite&&px[n-24].style.backgroundColor === opposite&&px[n-32].style.backgroundColor === opposite&&px[n-40].style.backgroundColor === opposite&&px[n-48].style.backgroundColor === opposite){
+                            thirdPixel2.style.backgroundColor = current;
+                            px[n-24].style.backgroundColor = current;
+                            px[n-40].style.backgroundColor = current;
+                            px[n-32].style.backgroundColor = current;
+                            px[n-48].style.backgroundColor = current;
+                            second.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    }
+
+                function check3(){
+                    if(thirdPixel3.style.backgroundColor === current){
+                            third.style.backgroundColor = current;
+                        }
+                }
+
+                function check4(){
+                    if(thirdPixel4.style.backgroundColor === current){
+                        fourth.style.backgroundColor = current;
+                    }
+                }
+
+                function check5(){
+                    if(thirdPixel5.style.backgroundColor === current){
+                            fifth.style.backgroundColor = current;
+                        }
+                }
+
+                function check6(){
+                    if (thirdPixel6.style.backgroundColor === current){
+                            sixth.style.backgroundColor = current;
+                            return;
+                    }
+                    if(n+24<64){
+                            if (px[n+24].style.backgroundColor === current&&thirdPixel6.style.backgroundColor === opposite){
+                                thirdPixel6.style.backgroundColor = current;
+                                sixth.style.backgroundColor = current;
+                                return;
+                            }
+                    }
+                    if(n+32<64){
+                            if (px[n+32].style.backgroundColor === current&&thirdPixel6.style.backgroundColor === opposite&&px[n+24].style.backgroundColor === opposite){
+                                thirdPixel6.style.backgroundColor = current;
+                                px[n+24].style.backgroundColor = current;
+                                sixth.style.backgroundColor = current;
+                                return;
+                            }
+                        }
+                    if(n+40<64){
+                        if (px[n+40].style.backgroundColor === current&&thirdPixel6.style.backgroundColor === opposite&&px[n+24].style.backgroundColor === opposite&&px[n+32].style.backgroundColor === opposite){
+                            thirdPixel6.style.backgroundColor = current;
+                            px[n+24].style.backgroundColor = current;
+                            px[n+32].style.backgroundColor = current;
+                            sixth.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    if(n+48<64){
+                        if (px[n+48].style.backgroundColor === current&&thirdPixel6.style.backgroundColor === opposite&&px[n+24].style.backgroundColor === opposite&&px[n+32].style.backgroundColor === opposite&&px[n+40].style.backgroundColor === opposite){
+                            thirdPixel6.style.backgroundColor = current;
+                            px[n+24].style.backgroundColor = current;
+                            px[n+40].style.backgroundColor = current;
+                            px[n+32].style.backgroundColor = current;
+                            sixth.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    if(n+56<64){
+                        if (px[n+56].style.backgroundColor === current&&thirdPixel6.style.backgroundColor === opposite&&px[n+24].style.backgroundColor === opposite&&px[n+32].style.backgroundColor === opposite&&px[n+40].style.backgroundColor === opposite&&px[n+48].style.backgroundColor === opposite){
+                            thirdPixel6.style.backgroundColor = current;
+                            px[n+24].style.backgroundColor = current;
+                            px[n+40].style.backgroundColor = current;
+                            px[n+32].style.backgroundColor = current;
+                            px[n+48].style.backgroundColor = current;
+                            sixth.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                }
+
+                function check7(){
+                    if(thirdPixel7.style.backgroundColor === current){
+                            seventh.style.backgroundColor = current;
+                            return;
+                    }
+                    if(n+14===16||n+14===24||n+14===32||n+14===40||n+14===48||n+14===56){
+                        return;
+                    }
+                    if(n+21<64){
+                            if (px[n+21].style.backgroundColor === current&&thirdPixel7.style.backgroundColor === opposite){
+                                thirdPixel7.style.backgroundColor = current;
+                                seventh.style.backgroundColor = current;
+                                return;
+                            }
+                    }
+                    if(n+21===24||n+21===32||n+21===40||n+21===48||n+21===56){
+                        return;
+                    }
+                    if(n+28<64){
+                            if (px[n+28].style.backgroundColor === current&&thirdPixel7.style.backgroundColor === opposite&&px[n+21].style.backgroundColor === opposite){
+                                thirdPixel7.style.backgroundColor = current;
+                                px[n+21].style.backgroundColor = current;
+                                seventh.style.backgroundColor = current;
+                                return;
+                            }
+                        }
+                    if(n+28===32||n+28===40||n+28===48||n+28===56){
+                        return;
+                    }
+                    if(n+35<64){
+                        if (px[n+35].style.backgroundColor === current&&thirdPixel7.style.backgroundColor === opposite&&px[n+21].style.backgroundColor === opposite&&px[n+28].style.backgroundColor === opposite){
+                            thirdPixel7.style.backgroundColor = current;
+                            px[n+21].style.backgroundColor = current;
+                            px[n+28].style.backgroundColor = current;
+                            seventh.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    if(n+35===40||n+35===48||n+35===56){
+                        return;
+                    }
+                    if(n+42<64){
+                        if (px[n+42].style.backgroundColor === current&&thirdPixel7.style.backgroundColor === opposite&&px[n+21].style.backgroundColor === opposite&&px[n+28].style.backgroundColor === opposite&&px[n+35].style.backgroundColor === opposite){
+                            thirdPixel7.style.backgroundColor = current;
+                            px[n+21].style.backgroundColor = current;
+                            px[n+35].style.backgroundColor = current;
+                            px[n+28].style.backgroundColor = current;
+                            seventh.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    if(n+42===48||n+42===56){
+                        return;
+                    }
+                    if(n+49<64){
+                        if (px[n+49].style.backgroundColor === current&&thirdPixel7.style.backgroundColor === opposite&&px[n+21].style.backgroundColor === opposite&&px[n+28].style.backgroundColor === opposite&&px[n+35].style.backgroundColor === opposite&&px[n+42].style.backgroundColor === opposite){
+                            thirdPixel7.style.backgroundColor = current;
+                            px[n+21].style.backgroundColor = current;
+                            px[n+35].style.backgroundColor = current;
+                            px[n+28].style.backgroundColor = current;
+                            px[n+42].style.backgroundColor = current;
+                            seventh.style.backgroundColor = current;
+                            return;
+                            }
+                        }   
+                }
+
+                function check8(){
+                    if(thirdPixel8.style.backgroundColor === current){
+                            eigth.style.backgroundColor = current;
+                        }
+                }
+
+
+                if (n===23||n===31||n===39||n===47||n===22||n===30||n===38||n===46){                               //right
+                    if (sixth.style.backgroundColor === opposite){   //Проверяет правые пиксели
+                        check6();
+                    }
+                    if(second.style.backgroundColor===opposite){
+                        check2();
+                    }
+                    if(eigth.style.backgroundColor===opposite){
+                        check8();
+                    }
+                    if(seventh.style.backgroundColor===opposite){
+                        check7();
+                    }
+                    if(first.style.backgroundColor===opposite){
+                        check1();
+                    }
+
+                     
+                }else if (n===15||n===7||n===14||n===6){                                                                   //верх-право
+                    if(sixth.style.backgroundColor === opposite){
+                        check6();
+                    }
+                    if(seventh.style.backgroundColor===opposite){
+                        check7()
+                    }
+                    if(eigth.style.backgroundColor===opposite){
+                        check8();
+                    }         
+                }else if (n===63||n===55||n===62||n===54){                          // right-bottom
+                    if(second.style.backgroundColor === opposite){
+                        check2();
+                    }
+                    if(first.style.backgroundColor===opposite){
+                        check1();
+                    }
+                    if(eigth.style.backgroundColor===opposite){
+                        check8();
+                    }
+              
+                }else if (n==16||n==17||n==24||n==25||n==32||n==33||n==40||n==41){                              //left
+                    if (sixth.style.backgroundColor === opposite){   //Проверяет правые пиксели
+                        check6();
+                    }
+                    if(second.style.backgroundColor===opposite){
+                        check2();
+                    }
+                    if(fourth.style.backgroundColor===opposite){
+                        check4();
+                    }
+                    if(third.style.backgroundColor===opposite){
+                        check3();
+                    }
+                    if(fifth.style.backgroundColor===opposite){
+                        check5();
+                    }
+                }else if (n===0||n===1||n===7||n===8){                                                                   //top-left
+                    if(sixth.style.backgroundColor === opposite){
+                        check6();
+                    }
+                    if(fifth.style.backgroundColor===opposite){
+                        check5();
+                    }
+                    if(fourth.style.backgroundColor===opposite){
+                        check4();
+                    }                    
+                }else if (n===56||n===57||n===49||n===48){                                  //bottom-left
+                    if(second.style.backgroundColor===opposite){
+                        check2();
+                    }
+                    if(third.style.backgroundColor===opposite){
+                        check3();
+                    }
+                    if(fourth.style.backgroundColor===opposite){
+                        check4();
+                    }                    
+                } else if(n==2||n==3||n==4||n==5||n==6||n==9||n==10||n==11||n==12||n==13){                                                        //top   //Проверяет правые пиксели
+                    if(sixth.style.backgroundColor === opposite){
+                        check6();
+                    }
+                    if(fourth.style.backgroundColor===opposite){
+                        check4();
+                    }
+                    if(eigth.style.backgroundColor===opposite){
+                        check8();
+                    } 
+                    if(seventh.style.backgroundColor===opposite){
+                        check7()
+                    }
+                    if(fifth.style.backgroundColor===opposite){
+                        check5();
+                    }              
+                } else if(57<n&&n<62||49<n&&n<54){                      // bottom
+                    if(second.style.backgroundColor===opposite){
+                        check2();
+                    }
+                    if(first.style.backgroundColor===opposite){
+                        check1();
+                    }
+                    if(eigth.style.backgroundColor===opposite){
+                        check8();
+                    } 
+                    if(third.style.backgroundColor===opposite){
+                        check3();
+                    }
+                    if(fourth.style.backgroundColor===opposite){
+                        check4();
+                    }             
+                }
+                 else {                                                                                                            //Проверяет правые пиксели 
+                    if(sixth.style.backgroundColor === opposite){
+                        check6();
+                    }
+                    if(fourth.style.backgroundColor===opposite){
+                        check4();
+                    }
+                    if(eigth.style.backgroundColor===opposite){
+                        check8();
+                    } 
+                    if(seventh.style.backgroundColor===opposite){
+                        check7()
+                    }
+                    if(fifth.style.backgroundColor===opposite){
+                        check5();
+                    }
+                    if(first.style.backgroundColor===opposite){
+                        check1();
+                    }
+                    if(second.style.backgroundColor===opposite){
+                        check2();
+                    }
+                    if(third.style.backgroundColor===opposite){
+                        check3();
+                    }
+                    }    
+                [current, opposite] = [opposite, current];
+                if (queue%2>0){
+                    pixel.style.backgroundColor = 'red';
+                    
+                } else{
+                    pixel.style.backgroundColor = 'blue';
+                }
+            queue+=1;
+            }
+        } 
+    </script>
+</body>
+</html>
