@@ -110,7 +110,7 @@
                     let r1 = (n1+shift)%8;
                     let b = parseInt((n1+shift)/8);
                     k = 0;
-                    while ((Math.abs(r-r1)<=1) && ((b>=0) && (b<8))) {
+                    while ((Math.abs(r-r1)<=1) && ((b>=0) && (b<8))&&r1>=0) {
                         if(px[n1+shift].style.backgroundColor===opposite){
                             n1 += shift;
                             r = n1%8;
@@ -128,7 +128,6 @@
                             return;
                         }
                     }
-                    return;
                 }
 
                 check(n, -9);
