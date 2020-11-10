@@ -89,6 +89,7 @@
             <td class='pixel'></td>
         </tr>
     </table>
+
     <script>
         let pixels = document.querySelectorAll('.pixel');
         let px =  Array.from(pixels);
@@ -101,481 +102,44 @@
                     let n = px.findIndex(function (val) {
                         return val === pixel;
                     })
-                let first = px[n-9];
-                let second = px[n-8];
-                let third = px[n-7]; 
-                let fourth = px[n+1];
-                let fifth = px[n+9];
-                let sixth = px[n+8];                   
-                let seventh = px[n+7]; 
-                let eigth = px[n-1];
-                let thirdPixel1 = px[n-18];
-                let thirdPixel2 = px[n-16];
-                let thirdPixel3 = px[n-14]; 
-                let thirdPixel4 = px[n+2];
-                let thirdPixel5 = px[n+18];
-                let thirdPixel6 = px[n+16];
-                let thirdPixel7 = px[n+14]; 
-                let thirdPixel8 = px[n-2];
                 
-                function check1(){
-                    if(thirdPixel1.style.backgroundColor === current){
-                            first.style.backgroundColor = current;
+                function check(n, shift){
+                    let n1=n;
+
+                    let r = n1%8;
+                    let r1 = (n1+shift)%8;
+                    let b = parseInt((n1+shift)/8);
+                    k = 0;
+                    while ((Math.abs(r-r1)<=1) && ((b>=0) && (b<8))) {
+                        if(px[n1+shift].style.backgroundColor===opposite){
+                            n1 += shift;
+                            r = n1%8;
+                            r1 = (n1+shift)%8;
+                            b = (n1+shift)/8;
+                            k++;    
+                        }else if(px[n1+shift].style.backgroundColor===current){
+                            n1 =n;
+                            for(i=0;i<k;i++){
+                                n1+=shift;
+                                px[n1].style.backgroundColor = current;
+                            }
+                            return;                         
+                        }else{
                             return;
-                    }
-                    if(n-18===8||n-18===16||n-18===24||n-18===32||n-18===40){
-                        return;
-                    }
-                    if(n-27>=0){
-                            if (px[n-27].style.backgroundColor === current&&thirdPixel1.style.backgroundColor === opposite){
-                                thirdPixel1.style.backgroundColor = current;
-                                first.style.backgroundColor = current;
-                                return;
-                            }
-                    }
-                    if(n-27===8||n-27===16||n-27===24||n-27===32){
-                        return;
-                    }
-                    if(n-36>=0){
-                            if (px[n-36].style.backgroundColor === current&&thirdPixel1.style.backgroundColor === opposite&&px[n-27].style.backgroundColor === opposite){
-                                thirdPixel1.style.backgroundColor = current;
-                                px[n-27].style.backgroundColor = current;
-                                first.style.backgroundColor = current;
-                                return;
-                            }
                         }
-                    if(n-36===8||n-36===16||n-36===24){
-                        return;
                     }
-                    if(n-45>=0){
-                        if (px[n-45].style.backgroundColor === current&&thirdPixel1.style.backgroundColor === opposite&&px[n-27].style.backgroundColor === opposite&&px[n-36].style.backgroundColor === opposite){
-                            thirdPixel1.style.backgroundColor = current;
-                            px[n-27].style.backgroundColor = current;
-                            px[n-36].style.backgroundColor = current;
-                            first.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    if(n-45===8||n-45===16){
-                        return;
-                    }
-                    if(n-54>=0){
-                        if (px[n-54].style.backgroundColor === current&&thirdPixel1.style.backgroundColor === opposite&&px[n-27].style.backgroundColor === opposite&&px[n-36].style.backgroundColor === opposite&&px[n-45].style.backgroundColor === opposite){
-                            thirdPixel1.style.backgroundColor = current;
-                            px[n-27].style.backgroundColor = current;
-                            px[n-45].style.backgroundColor = current;
-                            px[n-36].style.backgroundColor = current;
-                            first.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    if(n-54===8){
-                        return;
-                    }
-                    if(n-63>=0){
-                        if (px[n-63].style.backgroundColor === current&&thirdPixel1.style.backgroundColor === opposite&&px[n-27].style.backgroundColor === opposite&&px[n-36].style.backgroundColor === opposite&&px[n-45].style.backgroundColor === opposite&&px[n-54].style.backgroundColor === opposite){
-                            thirdPixel1.style.backgroundColor = current;
-                            px[n-27].style.backgroundColor = current;
-                            px[n-45].style.backgroundColor = current;
-                            px[n-36].style.backgroundColor = current;
-                            px[n-54].style.backgroundColor = current;
-                            first.style.backgroundColor = current;
-                            return;
-                            }
-                        }              
+                    return;
                 }
 
-                function check2(){
-                    if(thirdPixel2.style.backgroundColor === current){
-                            second.style.backgroundColor = current;
-                            return;
-                    }
-                    if(n-24>=0){
-                            if (px[n-24].style.backgroundColor === current&&thirdPixel2.style.backgroundColor === opposite){
-                                thirdPixel2.style.backgroundColor = current;
-                                second.style.backgroundColor = current;
-                                return;
-                            }
-                    }
-                    if(n-32>=0){
-                            if (px[n-32].style.backgroundColor === current&&thirdPixel2.style.backgroundColor === opposite&&px[n-24].style.backgroundColor === opposite){
-                                thirdPixel2.style.backgroundColor = current;
-                                px[n-24].style.backgroundColor = current;
-                                second.style.backgroundColor = current;
-                                return;
-                            }
-                        }
-                    if(n-40>=0){
-                        if (px[n-40].style.backgroundColor === current&&thirdPixel2.style.backgroundColor === opposite&&px[n-24].style.backgroundColor === opposite&&px[n-32].style.backgroundColor === opposite){
-                            thirdPixel2.style.backgroundColor = current;
-                            px[n-24].style.backgroundColor = current;
-                            px[n-32].style.backgroundColor = current;
-                            second.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    if(n-48>=0){
-                        if (px[n-48].style.backgroundColor === current&&thirdPixel2.style.backgroundColor === opposite&&px[n-24].style.backgroundColor === opposite&&px[n-32].style.backgroundColor === opposite&&px[n-40].style.backgroundColor === opposite){
-                            thirdPixel2.style.backgroundColor = current;
-                            px[n-24].style.backgroundColor = current;
-                            px[n-40].style.backgroundColor = current;
-                            px[n-32].style.backgroundColor = current;
-                            second.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    if(n-56>=0){
-                        if (px[n-56].style.backgroundColor === current&&thirdPixel2.style.backgroundColor === opposite&&px[n-24].style.backgroundColor === opposite&&px[n-32].style.backgroundColor === opposite&&px[n-40].style.backgroundColor === opposite&&px[n-48].style.backgroundColor === opposite){
-                            thirdPixel2.style.backgroundColor = current;
-                            px[n-24].style.backgroundColor = current;
-                            px[n-40].style.backgroundColor = current;
-                            px[n-32].style.backgroundColor = current;
-                            px[n-48].style.backgroundColor = current;
-                            second.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    }
+                check(n, -9);
+                check(n, -8);
+                check(n, -7);
+                check(n, 1);
+                check(n, 9);
+                check(n, 8);
+                check(n, 7);
+                check(n, -1);
 
-                function check3(){
-                    if(thirdPixel3.style.backgroundColor === current){
-                            third.style.backgroundColor = current;
-                        }
-                }
-
-                function check4(){
-                    if(thirdPixel4.style.backgroundColor === current){
-                        fourth.style.backgroundColor = current;
-                    }
-                }
-
-                function check5(){
-                    if(thirdPixel5.style.backgroundColor === current){
-                            fifth.style.backgroundColor = current;
-                        }
-                }
-
-                function check6(){
-                    if (thirdPixel6.style.backgroundColor === current){
-                            sixth.style.backgroundColor = current;
-                            return;
-                    }
-                    if(n+24<64){
-                            if (px[n+24].style.backgroundColor === current&&thirdPixel6.style.backgroundColor === opposite){
-                                thirdPixel6.style.backgroundColor = current;
-                                sixth.style.backgroundColor = current;
-                                return;
-                            }
-                    }
-                    if(n+32<64){
-                            if (px[n+32].style.backgroundColor === current&&thirdPixel6.style.backgroundColor === opposite&&px[n+24].style.backgroundColor === opposite){
-                                thirdPixel6.style.backgroundColor = current;
-                                px[n+24].style.backgroundColor = current;
-                                sixth.style.backgroundColor = current;
-                                return;
-                            }
-                        }
-                    if(n+40<64){
-                        if (px[n+40].style.backgroundColor === current&&thirdPixel6.style.backgroundColor === opposite&&px[n+24].style.backgroundColor === opposite&&px[n+32].style.backgroundColor === opposite){
-                            thirdPixel6.style.backgroundColor = current;
-                            px[n+24].style.backgroundColor = current;
-                            px[n+32].style.backgroundColor = current;
-                            sixth.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    if(n+48<64){
-                        if (px[n+48].style.backgroundColor === current&&thirdPixel6.style.backgroundColor === opposite&&px[n+24].style.backgroundColor === opposite&&px[n+32].style.backgroundColor === opposite&&px[n+40].style.backgroundColor === opposite){
-                            thirdPixel6.style.backgroundColor = current;
-                            px[n+24].style.backgroundColor = current;
-                            px[n+40].style.backgroundColor = current;
-                            px[n+32].style.backgroundColor = current;
-                            sixth.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    if(n+56<64){
-                        if (px[n+56].style.backgroundColor === current&&thirdPixel6.style.backgroundColor === opposite&&px[n+24].style.backgroundColor === opposite&&px[n+32].style.backgroundColor === opposite&&px[n+40].style.backgroundColor === opposite&&px[n+48].style.backgroundColor === opposite){
-                            thirdPixel6.style.backgroundColor = current;
-                            px[n+24].style.backgroundColor = current;
-                            px[n+40].style.backgroundColor = current;
-                            px[n+32].style.backgroundColor = current;
-                            px[n+48].style.backgroundColor = current;
-                            sixth.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                }
-
-                function check7(){
-                    if(thirdPixel7.style.backgroundColor === current){
-                            seventh.style.backgroundColor = current;
-                            return;
-                    }
-                    if(n+14===16||n+14===24||n+14===32||n+14===40||n+14===48||n+14===56){
-                        return;
-                    }
-                    if(n+21<64){
-                            if (px[n+21].style.backgroundColor === current&&thirdPixel7.style.backgroundColor === opposite){
-                                thirdPixel7.style.backgroundColor = current;
-                                seventh.style.backgroundColor = current;
-                                return;
-                            }
-                    }
-                    if(n+21===24||n+21===32||n+21===40||n+21===48||n+21===56){
-                        return;
-                    }
-                    if(n+28<64){
-                            if (px[n+28].style.backgroundColor === current&&thirdPixel7.style.backgroundColor === opposite&&px[n+21].style.backgroundColor === opposite){
-                                thirdPixel7.style.backgroundColor = current;
-                                px[n+21].style.backgroundColor = current;
-                                seventh.style.backgroundColor = current;
-                                return;
-                            }
-                        }
-                    if(n+28===32||n+28===40||n+28===48||n+28===56){
-                        return;
-                    }
-                    if(n+35<64){
-                        if (px[n+35].style.backgroundColor === current&&thirdPixel7.style.backgroundColor === opposite&&px[n+21].style.backgroundColor === opposite&&px[n+28].style.backgroundColor === opposite){
-                            thirdPixel7.style.backgroundColor = current;
-                            px[n+21].style.backgroundColor = current;
-                            px[n+28].style.backgroundColor = current;
-                            seventh.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    if(n+35===40||n+35===48||n+35===56){
-                        return;
-                    }
-                    if(n+42<64){
-                        if (px[n+42].style.backgroundColor === current&&thirdPixel7.style.backgroundColor === opposite&&px[n+21].style.backgroundColor === opposite&&px[n+28].style.backgroundColor === opposite&&px[n+35].style.backgroundColor === opposite){
-                            thirdPixel7.style.backgroundColor = current;
-                            px[n+21].style.backgroundColor = current;
-                            px[n+35].style.backgroundColor = current;
-                            px[n+28].style.backgroundColor = current;
-                            seventh.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    if(n+42===48||n+42===56){
-                        return;
-                    }
-                    if(n+49<64){
-                        if (px[n+49].style.backgroundColor === current&&thirdPixel7.style.backgroundColor === opposite&&px[n+21].style.backgroundColor === opposite&&px[n+28].style.backgroundColor === opposite&&px[n+35].style.backgroundColor === opposite&&px[n+42].style.backgroundColor === opposite){
-                            thirdPixel7.style.backgroundColor = current;
-                            px[n+21].style.backgroundColor = current;
-                            px[n+35].style.backgroundColor = current;
-                            px[n+28].style.backgroundColor = current;
-                            px[n+42].style.backgroundColor = current;
-                            seventh.style.backgroundColor = current;
-                            return;
-                            }
-                        }   
-                }
-
-                function check8(){
-                    if(thirdPixel8.style.backgroundColor === current){
-                            eigth.style.backgroundColor = current;
-                            return;
-                        }
-                        if(n-2===8||n-2===16||n-2===24||n-2===32||n-2===40||n-2===48||n-2===56){
-                        return;
-                    }
-                    if(n-3>=0){
-                            if (px[n-3].style.backgroundColor === current&&thirdPixel8.style.backgroundColor === opposite){
-                                thirdPixel8.style.backgroundColor = current;
-                                eigth.style.backgroundColor = current;
-                                return;
-                            }
-                    }
-                    if(n-3===8||n-3===16||n-3===24||n-3===32||n-3===40||n-3===48||n-3===56){
-                        return;
-                    }
-                    if(n-4>=0){
-                            if (px[n-4].style.backgroundColor === current&&thirdPixel8.style.backgroundColor === opposite&&px[n-3].style.backgroundColor === opposite){
-                                thirdPixel8.style.backgroundColor = current;
-                                px[n-3].style.backgroundColor = current;
-                                eigth.style.backgroundColor = current;
-                                return;
-                            }
-                        }
-                    if(n-4===8||n-4===16||n-4===24||n-4===32||n-4===40||n-4===48||n-4===56){
-                        return;
-                    }
-                    if(n-5>=0){
-                        if (px[n-5].style.backgroundColor === current&&thirdPixel8.style.backgroundColor === opposite&&px[n-3].style.backgroundColor === opposite&&px[n-4].style.backgroundColor === opposite){
-                            thirdPixel8.style.backgroundColor = current;
-                            px[n-3].style.backgroundColor = current;
-                            px[n-4].style.backgroundColor = current;
-                            eigth.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    if(n-5===8||n-5===16||n-5===24||n-5===32||n-5===40||n-5===48||n-5===56){
-                        return;
-                    }
-                    if(n-6>=0){
-                        if (px[n-6].style.backgroundColor === current&&thirdPixel8.style.backgroundColor === opposite&&px[n-3].style.backgroundColor === opposite&&px[n-4].style.backgroundColor === opposite&&px[n-5].style.backgroundColor === opposite){
-                            thirdPixel8.style.backgroundColor = current;
-                            px[n-3].style.backgroundColor = current;
-                            px[n-5].style.backgroundColor = current;
-                            px[n-4].style.backgroundColor = current;
-                            eigth.style.backgroundColor = current;
-                            return;
-                            }
-                        }
-                    if(n-6===8||n-6===16||n-6===24||n-6===32||n-6===40||n-6===48||n-6===56){
-                        return;
-                    }
-                    if(n-7>=0){
-                        if (px[n-7].style.backgroundColor === current&&thirdPixel8.style.backgroundColor === opposite&&px[n-3].style.backgroundColor === opposite&&px[n-4].style.backgroundColor === opposite&&px[n-5].style.backgroundColor === opposite&&px[n-6].style.backgroundColor === opposite){
-                            thirdPixel8.style.backgroundColor = current;
-                            px[n-3].style.backgroundColor = current;
-                            px[n-5].style.backgroundColor = current;
-                            px[n-4].style.backgroundColor = current;
-                            px[n-6].style.backgroundColor = current;
-                            eigth.style.backgroundColor = current;
-                            return;
-                            }
-                        }       
-                }
-
-
-                if (n===23||n===31||n===39||n===47||n===22||n===30||n===38||n===46){                               //right
-                    if (sixth.style.backgroundColor === opposite){   //Проверяет правые пиксели
-                        check6();
-                    }
-                    if(second.style.backgroundColor===opposite){
-                        check2();
-                    }
-                    if(eigth.style.backgroundColor===opposite){
-                        check8();
-                    }
-                    if(seventh.style.backgroundColor===opposite){
-                        check7();
-                    }
-                    if(first.style.backgroundColor===opposite){
-                        check1();
-                    }
-
-                     
-                }else if (n===15||n===7||n===14||n===6){                                                                   //верх-право
-                    if(sixth.style.backgroundColor === opposite){
-                        check6();
-                    }
-                    if(seventh.style.backgroundColor===opposite){
-                        check7()
-                    }
-                    if(eigth.style.backgroundColor===opposite){
-                        check8();
-                    }         
-                }else if (n===63||n===55||n===62||n===54){                          // right-bottom
-                    if(second.style.backgroundColor === opposite){
-                        check2();
-                    }
-                    if(first.style.backgroundColor===opposite){
-                        check1();
-                    }
-                    if(eigth.style.backgroundColor===opposite){
-                        check8();
-                    }
-              
-                }else if (n==16||n==17||n==24||n==25||n==32||n==33||n==40||n==41){                              //left
-                    if (sixth.style.backgroundColor === opposite){   //Проверяет правые пиксели
-                        check6();
-                    }
-                    if(second.style.backgroundColor===opposite){
-                        check2();
-                    }
-                    if(fourth.style.backgroundColor===opposite){
-                        check4();
-                    }
-                    if(third.style.backgroundColor===opposite){
-                        check3();
-                    }
-                    if(fifth.style.backgroundColor===opposite){
-                        check5();
-                    }
-                }else if (n===0||n===1||n===7||n===8){                                                                   //top-left
-                    if(sixth.style.backgroundColor === opposite){
-                        check6();
-                    }
-                    if(fifth.style.backgroundColor===opposite){
-                        check5();
-                    }
-                    if(fourth.style.backgroundColor===opposite){
-                        check4();
-                    }                    
-                }else if (n===56||n===57||n===49||n===48){                                  //bottom-left
-                    if(second.style.backgroundColor===opposite){
-                        check2();
-                    }
-                    if(third.style.backgroundColor===opposite){
-                        check3();
-                    }
-                    if(fourth.style.backgroundColor===opposite){
-                        check4();
-                    }                    
-                } else if(n==2||n==3||n==4||n==5||n==6||n==9||n==10||n==11||n==12||n==13){                                                        //top   //Проверяет правые пиксели
-                    if(sixth.style.backgroundColor === opposite){
-                        check6();
-                    }
-                    if(fourth.style.backgroundColor===opposite){
-                        check4();
-                    }
-                    if(eigth.style.backgroundColor===opposite){
-                        check8();
-                    } 
-                    if(seventh.style.backgroundColor===opposite){
-                        check7()
-                    }
-                    if(fifth.style.backgroundColor===opposite){
-                        check5();
-                    }              
-                } else if(57<n&&n<62||49<n&&n<54){                      // bottom
-                    if(second.style.backgroundColor===opposite){
-                        check2();
-                    }
-                    if(first.style.backgroundColor===opposite){
-                        check1();
-                    }
-                    if(eigth.style.backgroundColor===opposite){
-                        check8();
-                    } 
-                    if(third.style.backgroundColor===opposite){
-                        check3();
-                    }
-                    if(fourth.style.backgroundColor===opposite){
-                        check4();
-                    }             
-                }
-                 else {                                                                                                            //Проверяет правые пиксели 
-                    if(sixth.style.backgroundColor === opposite){
-                        check6();
-                    }
-                    if(fourth.style.backgroundColor===opposite){
-                        check4();
-                    }
-                    if(eigth.style.backgroundColor===opposite){
-                        check8();
-                    } 
-                    if(seventh.style.backgroundColor===opposite){
-                        check7()
-                    }
-                    if(fifth.style.backgroundColor===opposite){
-                        check5();
-                    }
-                    if(first.style.backgroundColor===opposite){
-                        check1();
-                    }
-                    if(second.style.backgroundColor===opposite){
-                        check2();
-                    }
-                    if(third.style.backgroundColor===opposite){
-                        check3();
-                    }
-                    }    
                 [current, opposite] = [opposite, current];
                 if (queue%2>0){
                     pixel.style.backgroundColor = 'red';
