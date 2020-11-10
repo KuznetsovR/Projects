@@ -377,7 +377,68 @@
                 function check8(){
                     if(thirdPixel8.style.backgroundColor === current){
                             eigth.style.backgroundColor = current;
+                            return;
                         }
+                        if(n-2===8||n-2===16||n-2===24||n-2===32||n-2===40||n-2===48||n-2===56){
+                        return;
+                    }
+                    if(n-3>=0){
+                            if (px[n-3].style.backgroundColor === current&&thirdPixel8.style.backgroundColor === opposite){
+                                thirdPixel8.style.backgroundColor = current;
+                                eigth.style.backgroundColor = current;
+                                return;
+                            }
+                    }
+                    if(n-3===8||n-3===16||n-3===24||n-3===32||n-3===40||n-3===48||n-3===56){
+                        return;
+                    }
+                    if(n-4>=0){
+                            if (px[n-4].style.backgroundColor === current&&thirdPixel8.style.backgroundColor === opposite&&px[n-3].style.backgroundColor === opposite){
+                                thirdPixel8.style.backgroundColor = current;
+                                px[n-3].style.backgroundColor = current;
+                                eigth.style.backgroundColor = current;
+                                return;
+                            }
+                        }
+                    if(n-4===8||n-4===16||n-4===24||n-4===32||n-4===40||n-4===48||n-4===56){
+                        return;
+                    }
+                    if(n-5>=0){
+                        if (px[n-5].style.backgroundColor === current&&thirdPixel8.style.backgroundColor === opposite&&px[n-3].style.backgroundColor === opposite&&px[n-4].style.backgroundColor === opposite){
+                            thirdPixel8.style.backgroundColor = current;
+                            px[n-3].style.backgroundColor = current;
+                            px[n-4].style.backgroundColor = current;
+                            eigth.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    if(n-5===8||n-5===16||n-5===24||n-5===32||n-5===40||n-5===48||n-5===56){
+                        return;
+                    }
+                    if(n-6>=0){
+                        if (px[n-6].style.backgroundColor === current&&thirdPixel8.style.backgroundColor === opposite&&px[n-3].style.backgroundColor === opposite&&px[n-4].style.backgroundColor === opposite&&px[n-5].style.backgroundColor === opposite){
+                            thirdPixel8.style.backgroundColor = current;
+                            px[n-3].style.backgroundColor = current;
+                            px[n-5].style.backgroundColor = current;
+                            px[n-4].style.backgroundColor = current;
+                            eigth.style.backgroundColor = current;
+                            return;
+                            }
+                        }
+                    if(n-6===8||n-6===16||n-6===24||n-6===32||n-6===40||n-6===48||n-6===56){
+                        return;
+                    }
+                    if(n-7>=0){
+                        if (px[n-7].style.backgroundColor === current&&thirdPixel8.style.backgroundColor === opposite&&px[n-3].style.backgroundColor === opposite&&px[n-4].style.backgroundColor === opposite&&px[n-5].style.backgroundColor === opposite&&px[n-6].style.backgroundColor === opposite){
+                            thirdPixel8.style.backgroundColor = current;
+                            px[n-3].style.backgroundColor = current;
+                            px[n-5].style.backgroundColor = current;
+                            px[n-4].style.backgroundColor = current;
+                            px[n-6].style.backgroundColor = current;
+                            eigth.style.backgroundColor = current;
+                            return;
+                            }
+                        }       
                 }
 
 
