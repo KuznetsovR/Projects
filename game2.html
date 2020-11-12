@@ -7,148 +7,126 @@
     <title>game</title>
 </head>
 <body>
-    <table id='table'>
-        <tr id='1'>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-        </tr>
-        <tr id='2'>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-        </tr>
-        <tr id='3'>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-        </tr>
-        <tr id='4'>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-        </tr>
-        <tr id='5'>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-        </tr>
-        <tr id='6'>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-        </tr>
-        <tr id='7'>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-        </tr>
-        <tr id='8'>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-            <td class='pixel'></td>
-        </tr>
-    </table>
+    <label for="size">Введите высоту таблицы:</label>
+    <input type="text" id="size">
+    <input type="text" id="width">
+    <button id='sizeButton' type='submit' style='height: 25px;'>Создать</button>
+    <button id='startGameButton' type='submit' style='height: 25px;'>Начать игру</button>
+    <div class='gamehasstarted'></div>
+    <div id='score'></div>
+    <table id='table'></table>
+    <br>
+    <div id='hod'></div>
 
     <script>
-        let pixels = document.querySelectorAll('.pixel');
-        let px =  Array.from(pixels);
-        let queue = 1;
+        let height1 = document.getElementById('size');
+        let width1 = document.getElementById('width');
+        let button = document.getElementById('sizeButton');
         let table = document.getElementById('table');
-        let current = 'red';
-        let opposite = 'blue';
-        for (let pixel of pixels){
-                pixel.onclick = function(){
-                    let n = px.findIndex(function (val) {
-                        return val === pixel;
-                    })
-                
-                function check(n, shift){
-                    let n1=n;
+        let height = 0;
+        let width = 0;
+        height1.onchange = function(){
+            height = height1.value;
+        }
+        width1.onchange = function(){
+            width = width1.value;
+        }
+        
+        width1.value = '';
+        height1.value = '';
+        button.onclick = function(){
+            for (i=1;i<=height;i++){
+                let newTr = document.createElement('tr');
+                table.append(newTr);
+                for(j=1;j<=width;j++){
+                let newTd = document.createElement('td');
+                newTd.classList.add('pixel');
+                newTr.append(newTd);
+                }
+            }
+    }
 
-                    let r = n1%8;
-                    let r1 = (n1+shift)%8;
-                    let b = parseInt((n1+shift)/8);
-                    k = 0;
-                    while ((Math.abs(r-r1)<=1) && ((b>=0) && (b<8))&&r1>=0) {
-                        if(px[n1+shift].style.backgroundColor===opposite){
-                            n1 += shift;
-                            r = n1%8;
-                            r1 = (n1+shift)%8;
-                            b = (n1+shift)/8;
-                            k++;    
-                        }else if(px[n1+shift].style.backgroundColor===current){
-                            n1 =n;
-                            for(i=0;i<k;i++){
-                                n1+=shift;
-                                px[n1].style.backgroundColor = current;
+    </script>
+
+    <script>
+        let startGameButton = document.getElementById('startGameButton');
+        startGameButton.onclick = function(){
+            button.disabled = true;
+            startGameButton.disabled = true;
+            let pixels = document.querySelectorAll('.pixel');
+            let startDiv = document.querySelector('.gamehasstarted');
+            startDiv.innerHTML = 'Игра началась!';
+            let px =  Array.from(pixels);
+            let score = document.getElementById('score');
+            let hod = document.getElementById('hod');
+            let queue = 1;
+            let current = 'red';
+            let opposite = 'blue';
+            console.log(px);
+            height = parseInt(height);
+            width = parseInt(width);
+            for (let pixel of pixels){
+                    pixel.onclick = function(){
+                        let n = px.findIndex(function (val) {                            //height is defined in another script
+                            return val === pixel;
+                        })
+                    
+                    function check(n, shift){
+                        let n1=n;
+                        let r = n1%width;
+                        let r1 = (n1+shift)%width;
+                        let b = (n1+shift)/height;
+                        k = 0;
+                        while ((Math.abs(r-r1)<=1) && ((b>=0) && (b<width))&&r1>=0) {
+                            if(px[n1+shift].style.backgroundColor===opposite){
+                                n1 += shift;
+                                r = n1%width;
+                                r1 = (n1+shift)%width;
+                                b = (n1+shift)/height;
+                                k++;    
+                            }else if(px[n1+shift].style.backgroundColor===current){
+                                n1 =n;
+                                for(i=0;i<k;i++){
+                                    n1+=shift;
+                                    px[n1].style.backgroundColor = current;
+                                    px[n1].classList.add(current);
+                                    px[n1].classList.remove(opposite);
+                                }
+                                return;                         
+                            }else{
+                                return;
                             }
-                            return;                         
-                        }else{
-                            return;
                         }
                     }
+                    check(n, -width-1);
+                    check(n, -width);
+                    check(n, -width+1);
+                    check(n, 1);
+                    check(n, width+1);
+                    check(n, width);
+                    check(n, width-1);
+                    check(n, -1);
+                    if (opposite === 'red'){
+                        hod.innerHTML = 'Ход: Красные';
+                    }else{
+                        hod.innerHTML = 'Ход: Синие';
+                    }
+                    hod.style.color = opposite;
+                    [current, opposite] = [opposite, current];
+                        if (queue%2>0){
+                            pixel.style.backgroundColor = 'red';
+                            pixel.classList.add('red');
+                        } else{
+                            pixel.style.backgroundColor = 'blue';
+                            pixel.classList.add('blue');
+                        }
+                    let blues = document.querySelectorAll('.blue');
+                    let reds = document.querySelectorAll('.red');
+                    score.innerHTML = 'Красные ' + reds.length + '      Синие ' + blues.length;
+                    queue+=1;
                 }
-
-                check(n, -9);
-                check(n, -8);
-                check(n, -7);
-                check(n, 1);
-                check(n, 9);
-                check(n, 8);
-                check(n, 7);
-                check(n, -1);
-
-                [current, opposite] = [opposite, current];
-                if (queue%2>0){
-                    pixel.style.backgroundColor = 'red';
-                    
-                } else{
-                    pixel.style.backgroundColor = 'blue';
-                }
-            queue+=1;
             }
-        } 
+            } 
     </script>
 </body>
 </html>
