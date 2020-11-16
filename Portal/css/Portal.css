@@ -73,10 +73,6 @@
 .form-label{
     margin-left: 10%;
 }
-
-.form-top{
-    justify-content: space-between;
-}
 .modal1-inner img{
     margin-left: 450px;
     height: 50px;
@@ -88,9 +84,17 @@
     text-align: center;
 }
 .content img{
-    width: 100%;
-    text-align: center;
+    transition: 1s;
+    z-index: 5;
+    width: 90%;
+    position: relative;
 }
 .footer{
     padding-top: 100px;
+}
+.content img:hover{
+    transform: scale(1.2);
+}
+.rules{
+    text-align: right;
 }
