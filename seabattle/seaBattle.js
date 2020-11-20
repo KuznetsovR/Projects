@@ -1,5 +1,15 @@
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+function makeShip(coordinates){
+    ship.coordinates = coordinates;
+    ship.status = 1;
+}
+
 let table = {
     elements:[],
+    shipList:[],
     makeElements: function(){
         let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
         for(i=0;i<10;i++){
@@ -16,7 +26,8 @@ let table = {
         }
     },
     setShip: function(){
-
+        let newShip = new this.shipMaker(this.elements[getRandomInt(99)], 1);
+        this.shipList.push(newShip);
     }
 }
 
@@ -56,10 +67,10 @@ let ship = {
         }
     }
 }
-
+//console.log(getRandomInt(99));
 table.makeElements();
-ship.setCoordinates('1а');
-console.log(table.elements);
-console.log(table.checkElement('1а'));
+//ship.setCoordinates('1а');
+//console.log(table.elements);
+//console.log(table.checkElement('1а'));
 
-//console.log(ship.getCoordinates())
+console.log(makeShip(getRandomInt(99)));
