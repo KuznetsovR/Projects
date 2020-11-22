@@ -2,15 +2,16 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
-function makeShip(coordinates){
-    ship.coordinates = coordinates;
-    ship.status = 1;
-}
+//function makeShip(coordinates){ makeShip(this.elements[getRandomInt(99)])
+//    ship.coordinates = coordinates;
+//    ship.status = 1;
+//    return ship;
+//}
 
 let table = {
     elements:[],
     shipList:[],
-    makeElements: function(){
+    makeElements: function(){                           // делает элементы, которые являются координатами
         let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
         for(i=0;i<10;i++){
             for(j=0;j<10;j++){
@@ -26,8 +27,12 @@ let table = {
         }
     },
     setShip: function(){
-        let newShip = new this.shipMaker(this.elements[getRandomInt(99)], 1);
-        this.shipList.push(newShip);
+        ship.coordinates = this.elements[getRandomInt(99)];          //это переводит числа в ячейки
+        ship['status'] = 1;
+        this.shipList.push(ship);
+        console.log(ship.coordinates)
+
+        console.log(this.shipList)
     }
 }
 
@@ -67,10 +72,12 @@ let ship = {
         }
     }
 }
-//console.log(getRandomInt(99));
+
 table.makeElements();
 //ship.setCoordinates('1а');
 //console.log(table.elements);
 //console.log(table.checkElement('1а'));
-
-console.log(makeShip(getRandomInt(99)));
+table.setShip();
+table.setShip();
+console.log(getRandomInt(99));
+console.log(getRandomInt(99));
