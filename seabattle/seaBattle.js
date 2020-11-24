@@ -2,37 +2,57 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
-//function makeShip(coordinates){ makeShip(this.elements[getRandomInt(99)])
-//    ship.coordinates = coordinates;
-//    ship.status = 1;
-//    return ship;
-//}
-
 let table = {
-    elements:[],
-    shipList:[],
+    field:[],
     makeElements: function(){                           // делает элементы, которые являются координатами
-        let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
-        for(i=0;i<10;i++){
-            for(j=0;j<10;j++){
-                this.elements.push(i+1 + alphabet[j]);
+        for (i=0;i<10;i++){
+            this.field[i] = [];    
+            for (j=0;j<10;j++) {
+                this.field[i][j] = 'none';
             }
         }
+        console.log(this.field); 
     },
-    checkElement: function(value){
-        if(ship.coordinates===value){
-            return 1;           //there is
-        }else{
-            return 0;           //there is not
-        }
-    },
-    setShip: function(){
-        ship.coordinates = this.elements[getRandomInt(99)];          //это переводит числа в ячейки
-        ship['status'] = 1;
-        this.shipList.push(ship);
-        console.log(ship.coordinates)
 
-        console.log(this.shipList)
+    shipMaker: function(){
+        
+        do {
+        let column = getRandomInt(9);
+        let row = getRandomInt(9);
+        console.log(column);
+        console.log(row);
+        } while (this.field[column][row] !== 'none');       //problem
+        this.field[column][row] = 'ship';
+        
+
+        //let digit = coordinates.replace(/\D/g, "");
+        //let letter = coordinates.replace(/[^а-я]/gi, ""); 
+        //let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
+        //letter = alphabet.indexOf(letter);
+        //console.log(letter);
+        //let column = 
+        //ship1
+    },
+    buiMaker: function(column, row){
+        let x = 0;
+        let buis = [
+            [-1,-1],
+            [-1,0],
+            [-1,1],
+            [0,-1],
+            [0,1],
+            [1,-1],
+            [1,0],
+            [1,1]
+        ]
+        for(i=0;i<9;i++){
+            x = buis[i][0];     //problem
+            y = buis[i][1];
+            console.log(x);
+            if (((0<=column+x)&&(column+x<10)) && ((0<=column+y)&&(column+y<10))) {
+                this.field[column+x][row+y] = 'bui';
+            }
+        }
     }
 }
 
@@ -60,9 +80,7 @@ let ship = {
         }
     },
     setCoordinates: function(value){
-        let digits = value.replace(/\D/g, "");
-        let letters = value.replace(/[^а-я]/gi, ""); 
-        let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
+        
         digits = parseInt(digits);
         if(digits<=10&&alphabet.indexOf(letters)<=9){
             this.coordinates = digits + letters;
@@ -74,10 +92,7 @@ let ship = {
 }
 
 table.makeElements();
-//ship.setCoordinates('1а');
-//console.log(table.elements);
-//console.log(table.checkElement('1а'));
-table.setShip();
-table.setShip();
-console.log(getRandomInt(99));
-console.log(getRandomInt(99));
+table.buiMaker(4, 4);
+//table.shipMaker();
+console.log(table.field);
+//table.setShip();
