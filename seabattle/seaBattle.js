@@ -1,7 +1,21 @@
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
-  }
-
+}
+function createShip(){
+    this.coordinatesX=null,
+    this.coordinatesY=null,
+    this.status= null,
+    this.getstatus = function () {
+        return this.status;
+    },
+    this.getCoordinates = function(){
+        if(this.coordinates==null){
+            return 1;
+        }else{
+            return this.coordinates;
+        }
+    }
+}
 let table = {
     field:[],
     arr:[
@@ -21,72 +35,71 @@ let table = {
                 this.field[i][j] = 'none';
             }
         }
-        console.log(this.field);
-        console.log(typeof(this.field));
     },
     shipChecker: function(coordinates){
         let digit = coordinates.replace(/\D/g, "")-1;
         let letter = coordinates.replace(/[^а-я]/gi, ""); 
         let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
         letter = alphabet.indexOf(letter);
-        console.log(digit);
-        console.log(letter);
         if (this.field[digit][letter]==="ship"){
             ship.status === 0;
-            console.log('killed');
+            this.field[digit][letter] = 'killedShip';
+            console.log('Killed');
         } else {
             console.log('Miss');
         }
     },
     shipMaker: function(){
-        
-        //do {
-        let column = getRandomInt(9);
-        let row = getRandomInt(9);
-        console.log(column);
-        console.log(row);
-        //} while (this.field[column][row] !== 'none');       //problem
-        this.field[row][column] = 'ship';
-        
-
-        //let digit = coordinates.replace(/\D/g, "");
-        //let letter = coordinates.replace(/[^а-я]/gi, ""); 
-        //let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
-        //letter = alphabet.indexOf(letter);
-        //console.log(letter);
-        //let column = 
-        //ship1
+        let ship = new createShip();
+        let column = null;
+        let row = null;
+        do {
+        column = getRandomInt(9);
+        row = getRandomInt(9);
+        //console.log(row, column);
+        } while (this.field[row][column] !== 'none');       
+        this.field[row][column] = ship;
+        ship.coordinatesX = column;
+        ship.coordinatesY = row;
+        return ship;
     },
-    buiMaker: function(column, row){
+    buiMaker: function(ship){
         let x = 0;
-        
-        console.log(typeof(this.arr));
-        for(p=0;p<9;p++){
-            x = this.arr[p][0];     //problem
+        let y = 0;
+        let column = ship.coordinatesX;
+        let row = ship.coordinatesY;
+        //console.log(row, column);
+        for(p=0;p<8;p++){
+            x = this.arr[p][0];     
             y = this.arr[p][1];
-            console.log(x);
-            if (((0<=column+x)&&(column+x<10)) && ((0<=column+y)&&(column+y<10))) {
-                this.field[column+x][row+y] = 'bui';
+            if (((0<=column+x)&&(column+x<10)) && ((0<=row+y)&&(row+y<10))) {
+                this.field[row+y][column+x] = 'bui';
             }
         }
+    },
+    render: function (place) {
+        console.log(table.field);
+        for (let i=0;i<10;i++) {
+            place.insertAdjacentHTML('afterbegin', `<div id='row${i}'class='row'></div>`);
+            row = document.getElementById(`row${i}`);
+            row.insertAdjacentHTML('afterbegin', `<div id='col${i}0'class='col'>${i}</div>`);
+            for (let j=0;j<10;j++) {
+                row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col'>${table.field[i][j]}</div>`);
+            }
+            row.insertAdjacentHTML('afterbegin', `<div id='col${i}11'class='col'>${i}</div>`);
+        }
+
+        console.log(place);
+        //place.a   
     }
 }
-
+/*
 let ship = {
-    coordinates:null ,
+    coordinatesX:null,
+    coordinatesY:null,
     status: null,
     getstatus: function () {
         return this.status;
-    },
-    setstatus: function(value) {
-        switch(value) {
-            case 1:             //alive
-            case 0:             // not alive
-                this.status = value;
-                return 0;
-            default:
-                return 1;
-        }
     },
     getCoordinates: function(){
         if(this.coordinates==null){
@@ -94,21 +107,20 @@ let ship = {
         }else{
             return this.coordinates;
         }
-    },
-    setCoordinates: function(value){
-        digits = parseInt(digits);
-        if(digits<=10&&alphabet.indexOf(letters)<=9){
-            this.coordinates = digits + letters;
-            return 0;
-        } else{
-            return 1;
-        }
     }
 }
-
+*/
 table.makeElements();
-table.shipMaker();
-table.shipChecker('1б')
-//table.buiMaker(4, 4);
-//console.log(table.field);
-//table.setShip();
+table.buiMaker(table.shipMaker());
+table.buiMaker(table.shipMaker());
+table.buiMaker(table.shipMaker());
+table.buiMaker(table.shipMaker());
+//table.shipChecker('1б');
+console.log(table.field);
+table.render(document.getElementById("battlefield"));
+
+
+// 1) получить col.length
+// 2) получить row.length
+// 3) arr x foreach row 
+// 4) arr y foreach col 
