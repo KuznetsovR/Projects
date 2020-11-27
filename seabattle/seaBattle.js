@@ -78,15 +78,25 @@ let table = {
         }
     },
     render: function (place) {
+        let c = 1;
         console.log(table.field);
         for (let i=0;i<10;i++) {
             place.insertAdjacentHTML('afterbegin', `<div id='row${i}'class='row'></div>`);
             row = document.getElementById(`row${i}`);
-            row.insertAdjacentHTML('afterbegin', `<div id='col${i}0'class='col'>${i}</div>`);
+            row.insertAdjacentHTML('afterbegin', `<div id='col${i}0'class='col'>${c}</div>`);
             for (let j=0;j<10;j++) {
-                row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col'>${table.field[i][j]}</div>`);
+                if (table.field[i][j]=='bui'){
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col' style = 'background-color:red'>${table.field[i][j]}</div>`);
+                }               
+                else if (table.field[i][j]!=='none' &&table.field[i][j]!=='bui'){
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col'style = 'background-color:green'>${table.field[i][j]}</div>`);
+                }
+                else{
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col'></div>`);
+                }
             }
-            row.insertAdjacentHTML('afterbegin', `<div id='col${i}11'class='col'>${i}</div>`);
+            row.insertAdjacentHTML('afterbegin', `<div id='col${i}11'class='col'>${c}</div>`);
+            c++;
         }
 
         console.log(place);
