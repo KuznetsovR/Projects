@@ -78,29 +78,42 @@ let table = {
         }
     },
     render: function (place) {
-        let c = 1;
+        let c = 10;
         console.log(table.field);
-        for (let i=0;i<10;i++) {
+        let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
+        for (let i=0;i<12;i++) {
             place.insertAdjacentHTML('afterbegin', `<div id='row${i}'class='row'></div>`);
             row = document.getElementById(`row${i}`);
-            row.insertAdjacentHTML('afterbegin', `<div id='col${i}0'class='col'>${c}</div>`);
-            for (let j=0;j<10;j++) {
-                if (table.field[i][j]=='bui'){
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col' style = 'background-color:red'>${table.field[i][j]}</div>`);
-                }               
-                else if (table.field[i][j]!=='none' &&table.field[i][j]!=='bui'){
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col'style = 'background-color:green'>${table.field[i][j]}</div>`);
+            if(i===0||i===11){
+                let alphabetFor = 9;
+                for (let t=0;t<12;t++) {
+                    if (t===0||t===11){
+                        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'></div>`);
+                    }else{
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'>${alphabet[alphabetFor]}</div>`);
+                    alphabetFor--;
+                    }
                 }
-                else{
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col'></div>`);
-                }
+                continue;
             }
-            row.insertAdjacentHTML('afterbegin', `<div id='col${i}11'class='col'>${c}</div>`);
-            c++;
+            row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'>${c}</div>`);
+            for (let j=0;j<10;j++) {
+                if (table.field[i-1][j]!=='none' &&table.field[i-1][j]!=='bui'){
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col' style = 'background-color:black; padding-top:8%; border:1px solid black;'></div>`); //${table.field[i][j]}
+                }               
+                /*else if (table.field[i][j]=='bui'){ 
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col' style = 'background-color:green; padding-top:8%; border:1px solid black;'></div>`); //${table.field[i][j]}
+                }*/
+                else{
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
+                }
+                
+            }
+            row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'>${c}</div>`);
+            c--;
         }
-
+//  row.insertAdjacentHTML('afterbegin', `<div id='col${i}0'class='col'>${alphabet[c]}</div>`);
         console.log(place);
-        //place.a   
     }
 }
 /*
@@ -128,9 +141,3 @@ table.buiMaker(table.shipMaker());
 //table.shipChecker('1б');
 console.log(table.field);
 table.render(document.getElementById("battlefield"));
-
-
-// 1) получить col.length
-// 2) получить row.length
-// 3) arr x foreach row 
-// 4) arr y foreach col 
