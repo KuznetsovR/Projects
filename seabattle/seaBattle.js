@@ -16,7 +16,7 @@ function createShip(){
         }
     }
 }
-let yourTable = {
+let yourTable = {                                       //объект своего поля
     field:[],
     arr:[
         [-1,-1],
@@ -102,7 +102,7 @@ let yourTable = {
         console.log(place);
     }
 }
-let enemyTable = {
+let enemyTable = {                                       //объект вражеского поля
     field:[],
     arr:[
         [-1,-1],
