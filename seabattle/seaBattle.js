@@ -88,15 +88,15 @@ let table = {
                 let alphabetFor = 9;
                 for (let t=0;t<12;t++) {
                     if (t===0||t===11){
-                        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'></div>`);
+                        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-left:1%'></div>`);
                     }else{
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'>${alphabet[alphabetFor]}</div>`);
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-left:1%'>${alphabet[alphabetFor]}</div>`);
                     alphabetFor--;
                     }
                 }
                 continue;
             }
-            row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'>${c}</div>`);
+            row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
             for (let j=0;j<10;j++) {
                 if (table.field[i-1][j]!=='none' &&table.field[i-1][j]!=='bui'){
                     row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col' style = 'background-color:black; padding-top:8%; border:1px solid black;'></div>`); //${table.field[i][j]}
@@ -109,10 +109,9 @@ let table = {
                 }
                 
             }
-            row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'>${c}</div>`);
+            row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
             c--;
         }
-//  row.insertAdjacentHTML('afterbegin', `<div id='col${i}0'class='col'>${alphabet[c]}</div>`);
         console.log(place);
     }
 }
@@ -134,10 +133,9 @@ let ship = {
 }
 */
 table.makeElements();
-table.buiMaker(table.shipMaker());
-table.buiMaker(table.shipMaker());
-table.buiMaker(table.shipMaker());
-table.buiMaker(table.shipMaker());
+for (let p=0;p<4;p++){
+    table.buiMaker(table.shipMaker());
+}
 //table.shipChecker('1б');
-console.log(table.field);
+//console.log(table.field);
 table.render(document.getElementById("battlefield"));
