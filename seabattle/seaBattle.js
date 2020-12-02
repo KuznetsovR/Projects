@@ -18,11 +18,11 @@ function createShip(){
     }
 };
 
-function render(place){
-    name = String(place);
-    place = document.getElementById(place);
+function render(id, table){
+    let name = id;
+    let place = document.getElementById(id); //document.getElementById("playersField")
+    let object = table;  //this is field
     let c = 10;
-    console.log(name);
     let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
     for (let i=0;i<12;i++) {
         place.insertAdjacentHTML('afterbegin', `<div id='row${i}'class='row'></div>`);
@@ -40,30 +40,32 @@ function render(place){
             continue;
         }
         row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
-        if(name==='enemyField'){
+        if(name==='playersField'){
             for (let j=0;j<10;j++) {
-                if (name.field[i-1][j]!=='none' &&name.field[i-1][j]!=='bui'){
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col' style = 'background-color:black; padding-top:8%; border:1px solid black;'></div>`); //${enemyTable.field[i][j]}
+                if (typeof(object.field[i-1][j])==='object'){
+                    row.insertAdjacentHTML('afterbegin', `<div id='col-1${c}${j}'class='col' style = 'background-color:black; padding-top:8%; border:1px solid black;'></div>`); //${enemyTable.field[i][j]}
                 }               
                 /*else if (enemyTable.field[i][j]=='bui'){ 
                     row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col' style = 'background-color:green; padding-top:8%; border:1px solid black;'></div>`); //${enemyTable.field[i][j]}
                 }*/
                 else{
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
+                    row.insertAdjacentHTML('afterbegin', `<div id='col-1${c}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
                 }
             }
-        } else {
+        } else if (name==='enemyTable'){
             for (let j=0;j<10;j++) {
-                row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
+                row.insertAdjacentHTML('afterbegin', `<div id='col${c}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
             }
+        } else {
+            console.log('error');
         }
         row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
         c--;
     }
-    console.log(place);
 }
 
-function tableMaker(){
+function tableMaker(value){
+    this.id = value,
     this.field=[],
     this.arr=[
         [-1,-1],
@@ -88,12 +90,14 @@ function tableMaker(){
         let letter = coordinates.replace(/[^а-я]/gi, ""); 
         let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
         letter = alphabet.indexOf(letter);
-        if (this.field[digit][letter]==="ship"){
-            ship.status === 0;
-            this.field[digit][letter] = 'killedShip';
-            console.log('Killed');
+        if (typeof(enemyTable.field[digit][letter])==='object'){
+            //ship.status === 0;
+            enemyTable.field[digit][letter] = 'killedShip';
+            let returnArr = ['Killed', digit, letter]
+            return returnArr;
         } else {
-            console.log('Miss');
+            let returnArr = ['Miss', digit, letter]
+            return returnArr;
         }
     },
     this.shipMaker= function(){
@@ -125,7 +129,20 @@ function tableMaker(){
         }
     }
 }
-
+function shot(){
+    let val = document.getElementById('shotinput').value;
+    let condition = enemyTable.shipChecker(val);
+    let rowShot = String(condition[1]+1);
+    let columnShot = String(9-condition[2]);
+    let coordinatesShot = rowShot + columnShot;
+    let id = `col${coordinatesShot}`;
+    let shot = document.getElementById(id);
+    if (condition[0]==='Killed'){
+        shot.style.backgroundColor = 'black';
+    }else if (condition[0]==='Miss'){
+        shot.style.backgroundColor = 'gray';
+    }
+}
 /*
 render: function (place) {
         let c = 10;
@@ -165,31 +182,26 @@ render: function (place) {
         console.log(place);
     }
 */
-let enemyTable = new tableMaker();
-let playersField = new tableMaker();
+let enemyTable = new tableMaker('enemyTable');
+let playersField = new tableMaker('playersField');
 enemyTable.makeElements();
 playersField.makeElements();
-
-console.log(enemyTable.field, playersField.field);
-
+console.log(enemyTable.field)
 for (let p=0;p<4;p++){
     enemyTable.buiMaker(enemyTable.shipMaker());
 }
 for (let w=0;w<4;w++){
     playersField.buiMaker(playersField.shipMaker());
 }
-//enemyTable.shipChecker('1б');
-//console.log(enemyTable.field);
-render(enemyTable);
-render(playersField);
 
-//enemyTable.render(document.getElementById("enemyField"));
-//playersField.render(document.getElementById("playersField"));
+render(enemyTable.id, enemyTable);
+render(playersField.id, playersField);
 
+let btn = document.getElementById('shot');
+btn.onclick = function(){
+    shot();
+}
 
 /*
-сделать 2 экземпляра сущности
-сделать универсальную сущность поля боя (свой и чужой)
-установка нового состояния ячейки при выстреле
-рендер сделать отдельно от сущности
+сделать многопалубные корабли
 */
