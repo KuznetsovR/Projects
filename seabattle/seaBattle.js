@@ -2,7 +2,7 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 };
 
-function createShip(){
+function createShip(){                               
     this.coordinatesX=null,
     this.coordinatesY=null,
     this.status= null,
@@ -100,18 +100,43 @@ function tableMaker(value){
             return returnArr;
         }
     },
-    this.shipMaker= function(){
+    this.shipMaker= function(size){            //
         let ship = new createShip();
         let column = null;
         let row = null;
+        let checker = [ [-1,0], [0,-1], [0,1], [1,0] ];
+        let x = 0;
+        let y = 0;
+        let a = 0;
         do {
         column = getRandomInt(9);
         row = getRandomInt(9);
         //console.log(row, column);
-        } while (this.field[row][column] !== 'none');       
+        } while (this.field[row][column] !== 'none');
+
+        if (size===1){       
         this.field[row][column] = ship;
         ship.coordinatesX = column;
         ship.coordinatesY = row;
+
+        }else if (size===2){
+            for(let i = 0;i<1;i++){
+                this.field[row][column] = ship;
+                for(let z = 0;z<4;z++){
+                    x = checker[z][0];     
+                    y = checker[z][1];
+                    if ([row+x][column+y]==='none'){
+                        this.field[row+x][column+y] = ship;
+                    }else{
+                        a++;
+                    }
+                    if (a==4){
+                        this.field[row][column] = 'none';
+                        i--;
+                    }
+                }
+            }
+        }
         return ship;
     },
     this.buiMaker= function(ship){
@@ -124,7 +149,9 @@ function tableMaker(value){
             x = this.arr[p][0];     
             y = this.arr[p][1];
             if (((0<=column+x)&&(column+x<10)) && ((0<=row+y)&&(row+y<10))) {
+                if(this.field[row+y][column+x] = 'none'){
                 this.field[row+y][column+x] = 'bui';
+                }
             }
         }
     }
@@ -188,12 +215,13 @@ enemyTable.makeElements();
 playersField.makeElements();
 console.log(enemyTable.field)
 for (let p=0;p<4;p++){
-    enemyTable.buiMaker(enemyTable.shipMaker());
+    enemyTable.buiMaker(enemyTable.shipMaker(1));
 }
 for (let w=0;w<4;w++){
-    playersField.buiMaker(playersField.shipMaker());
+    playersField.buiMaker(playersField.shipMaker(1));
 }
-
+playersField.shipMaker(2);
+console.log(playersField.field);
 render(enemyTable.id, enemyTable);
 render(playersField.id, playersField);
 
