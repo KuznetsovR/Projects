@@ -18,10 +18,9 @@ function createShip(){
     }
 };
 
-function render(id, table){
+function render(id){
     let name = id;
     let place = document.getElementById(id); //document.getElementById("playersField")
-    let object = table;  //this is field
     let c = 10;
     let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
     for (let i=0;i<12;i++) {
@@ -42,19 +41,21 @@ function render(id, table){
         row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
         if(name==='playersField'){
             for (let j=0;j<10;j++) {
-                if (typeof(object.field[i-1][j])==='object'){
-                    row.insertAdjacentHTML('afterbegin', `<div id='col-1${c}${j}'class='col' style = 'background-color:black; padding-top:8%; border:1px solid black;'></div>`); //${enemyTable.field[i][j]}
-                }               
-                /*else if (enemyTable.field[i][j]=='bui'){ 
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col' style = 'background-color:green; padding-top:8%; border:1px solid black;'></div>`); //${enemyTable.field[i][j]}
-                }*/
-                else{
+                if (playersField.getStatus(i-1,j)===1){
+                    row.insertAdjacentHTML('afterbegin', `<div id='col-1${c}${j}'class='col' style = 'background-color:black; padding-top:8%; border:1px solid black;'></div>`);
+                }else{
                     row.insertAdjacentHTML('afterbegin', `<div id='col-1${c}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
                 }
             }
         } else if (name==='enemyTable'){
             for (let j=0;j<10;j++) {
-                row.insertAdjacentHTML('afterbegin', `<div id='col${c}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
+                if( enemyTable.getStatus(i-1,j)===3){
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${c}${j}'class='col' style = 'background-color:red; padding-top:8%; border:1px solid black;'></div>`);
+                }else if(enemyTable.getStatus(i-1,j)===4){
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${c}${j}'class='col' style = 'background-color:gray; padding-top:8%; border:1px solid black;'></div>`);
+                }else{
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${c}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
+                }
             }
         } else {
             console.log('error');
@@ -63,7 +64,46 @@ function render(id, table){
         c--;
     }
 }
+function afterRender(id){
+    let name = id;
 
+    if(name==='playersField'){
+            for (let j=0;j<10;j++) {
+                for (let i=0;i<10;i++){
+                    if (playersField.getStatus(i,j)===1){
+                        let neededPixel = document.getElementById(`col-1${i+1}${9-j}`);
+                        neededPixel.style.backgroundColor = 'black';
+                    }else if(playersField.getStatus(i,j)===3){
+                        let neededPixel = document.getElementById(`col-1${i+1}${9-j}`);
+                        neededPixel.style.backgroundColor = 'red';
+                    }else if(playersField.getStatus(i,j)===4){
+                        let neededPixel = document.getElementById(`col-1${i+1}${9-j}`);
+                        neededPixel.style.backgroundColor = 'gray';
+                    }else{
+                        let neededPixel = document.getElementById(`col-1${i+1}${9-j}`);
+                        neededPixel.style.backgroundColor = 'white';
+                    }
+                }
+            }
+    } else if (name==='enemyTable'){
+            for (let j=0;j<10;j++) {
+                for (let i=0;i<10;i++){
+                    if(enemyTable.getStatus(i,j)===3){
+                        let neededPixel = document.getElementById(`col${i+1}${9-j}`);
+                        neededPixel.style.backgroundColor = 'red';
+                    }else if(enemyTable.getStatus(i,j)===4){
+                        let neededPixel = document.getElementById(`col${i+1}${9-j}`);
+                        neededPixel.style.backgroundColor = 'gray';
+                    }else{
+                        let neededPixel = document.getElementById(`col${i+1}${9-j}`);
+                        neededPixel.style.backgroundColor = 'white';
+                    }
+                }
+            }
+    } else {
+        console.log('error');
+        }
+}
 function tableMaker(value){
     this.id = value,
     this.field=[],
@@ -85,22 +125,23 @@ function tableMaker(value){
             }
         }
     },
-    this.shipChecker= function(coordinates){
-        let digit = coordinates.replace(/\D/g, "")-1;
-        let letter = coordinates.replace(/[^а-я]/gi, ""); 
-        let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
-        letter = alphabet.indexOf(letter);
+    this.getStatus= function(digit, letter){  //digit -row letter - column
         if (typeof(enemyTable.field[digit][letter])==='object'){
-            //ship.status === 0;
-            enemyTable.field[digit][letter] = 'killedShip';
-            let returnArr = ['Killed', digit, letter]
-            return returnArr;
-        } else {
-            let returnArr = ['Miss', digit, letter]
-            return returnArr;
+            return 1;
+        }else{
+            switch (enemyTable.field[digit][letter]){
+                case 'none':
+                    return 0;
+                case 'bui':
+                    return 2;
+                case 'killedShip':
+                    return 3;
+                case 'missedShot':
+                    return 4;
+            }
         }
     },
-    this.shipMaker= function(size){            //
+    this.shipMaker= function(size){          
         let ship = new createShip();
         let column = null;
         let row = null;
@@ -118,8 +159,8 @@ function tableMaker(value){
         this.field[row][column] = ship;
         ship.coordinatesX = column;
         ship.coordinatesY = row;
-
-        }else if (size===2){
+            
+        }/*else if (size===2){
             for(let i = 0;i<1;i++){
                 this.field[row][column] = ship;
                 for(let z = 0;z<4;z++){
@@ -136,7 +177,7 @@ function tableMaker(value){
                     }
                 }
             }
-        }
+        }*/
         return ship;
     },
     this.buiMaker= function(ship){
@@ -156,59 +197,19 @@ function tableMaker(value){
         }
     }
 }
-function shot(){
-    let val = document.getElementById('shotinput').value;
-    let condition = enemyTable.shipChecker(val);
-    let rowShot = String(condition[1]+1);
-    let columnShot = String(9-condition[2]);
-    let coordinatesShot = rowShot + columnShot;
-    let id = `col${coordinatesShot}`;
-    let shot = document.getElementById(id);
-    if (condition[0]==='Killed'){
-        shot.style.backgroundColor = 'black';
-    }else if (condition[0]==='Miss'){
-        shot.style.backgroundColor = 'gray';
+function shot(val){
+    let digit = val.replace(/\D/g, "")-1;
+    let letter = val.replace(/[^а-я]/gi, ""); 
+    let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
+    letter = alphabet.indexOf(letter);
+    let status = enemyTable.getStatus(digit, letter);
+    console.log(status);
+    if (status===1){
+        enemyTable.field[digit][letter] = 'killedShip';
+    }else{
+        enemyTable.field[digit][letter] = 'missedShot';
     }
 }
-/*
-render: function (place) {
-        let c = 10;
-        console.log(yourTable.field);
-        let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
-        for (let i=0;i<12;i++) {
-            place.insertAdjacentHTML('afterbegin', `<div id='row${i}'class='row'></div>`);
-            row = document.getElementById(`row${i}`);
-            if(i===0||i===11){
-                let alphabetFor = 9;
-                for (let t=0;t<12;t++) {
-                    if (t===0||t===11){
-                        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-left:1%'></div>`);
-                    }else{
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-left:1%'>${alphabet[alphabetFor]}</div>`);
-                    alphabetFor--;
-                    }
-                }
-                continue;
-            }
-            row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
-            for (let j=0;j<10;j++) {
-                if (yourTable.field[i-1][j]!=='none' && yourTable.field[i-1][j]!=='bui'){
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col' style = 'background-color:black; padding-top:8%; border:1px solid black;'></div>`); //${yourTable.field[i][j]}
-                }               
-                /*else if (enemyyourTable.field[i][j]=='bui'){ 
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col' style = 'background-color:green; padding-top:8%; border:1px solid black;'></div>`); //${yourTable.field[i][j]}
-                }*/
-                /*else{
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
-                }
-                
-            }
-            row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
-            c--;
-        }
-        console.log(place);
-    }
-*/
 let enemyTable = new tableMaker('enemyTable');
 let playersField = new tableMaker('playersField');
 enemyTable.makeElements();
@@ -220,14 +221,17 @@ for (let p=0;p<4;p++){
 for (let w=0;w<4;w++){
     playersField.buiMaker(playersField.shipMaker(1));
 }
-playersField.shipMaker(2);
+//playersField.shipMaker(2);
 console.log(playersField.field);
-render(enemyTable.id, enemyTable);
-render(playersField.id, playersField);
-
+render('enemyTable');
+render('playersField');
+console.log(document.getElementById('shotinput').value)
 let btn = document.getElementById('shot');
+
 btn.onclick = function(){
-    shot();
+    shot(document.getElementById('shotinput').value);
+    afterRender('enemyTable');
+    console.log(enemyTable.field);
 }
 
 /*
