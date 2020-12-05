@@ -161,19 +161,21 @@ function tableMaker(value){
         ship.coordinatesY = row;
             
         }/*else if (size===2){
-            for(let i = 0;i<1;i++){
-                this.field[row][column] = ship;
-                for(let z = 0;z<4;z++){
-                    x = checker[z][0];     
-                    y = checker[z][1];
-                    if ([row+x][column+y]==='none'){
-                        this.field[row+x][column+y] = ship;
-                    }else{
-                        a++;
-                    }
-                    if (a==4){
-                        this.field[row][column] = 'none';
-                        i--;
+            if (this.field[row][column] = 'none'){
+                for(let i = 0;i<1;i++){
+                    this.field[row][column] = ship;
+                    for(let z = 0;z<4;z++){
+                        x = checker[z][0];     
+                        y = checker[z][1];
+                        if ([row+x][column+y]==='none'){
+                            this.field[row+x][column+y] = ship;
+                        }else{
+                            a++;
+                        }
+                        if (a==4){
+                            this.field[row][column] = 'none';
+                            i--;
+                        }
                     }
                 }
             }
