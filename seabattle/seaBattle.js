@@ -143,6 +143,7 @@ function tableMaker(value){
     },
     this.shipMaker= function(size){          
         let ship = new createShip();
+        let ship2 = new createShip();
         let column = null;
         let row = null;
         let checker = [ [-1,0], [0,-1], [0,1], [1,0] ];
@@ -152,35 +153,28 @@ function tableMaker(value){
         do {
         column = getRandomInt(9);
         row = getRandomInt(9);
-        //console.log(row, column);
         } while (this.field[row][column] !== 'none');
 
         if (size===1){       
         this.field[row][column] = ship;
         ship.coordinatesX = column;
         ship.coordinatesY = row;
-            
+         return ship;   
         }/*else if (size===2){
-            if (this.field[row][column] = 'none'){
-                for(let i = 0;i<1;i++){
-                    this.field[row][column] = ship;
-                    for(let z = 0;z<4;z++){
+            do {
+                column = getRandomInt(9);
+                row = getRandomInt(9);
+                    for(let z = 0;z<4;z++){                 //проверка чтобы не выходила за таблицу
                         x = checker[z][0];     
                         y = checker[z][1];
-                        if ([row+x][column+y]==='none'){
-                            this.field[row+x][column+y] = ship;
-                        }else{
-                            a++;
-                        }
-                        if (a==4){
-                            this.field[row][column] = 'none';
-                            i--;
-                        }
                     }
-                }
-            }
+            } while (this.field[row][column] !== 'none'&&this.field[row+x][column+y] !== 'none');
+            this.field[row][column] = ship;
+            this.field[row+x][column+y] = ship2;
+            ship.coordinatesX = column;
+            ship.coordinatesY = row;
         }*/
-        return ship;
+        
     },
     this.buiMaker= function(ship){
         let x = 0;
@@ -192,7 +186,7 @@ function tableMaker(value){
             x = this.arr[p][0];     
             y = this.arr[p][1];
             if (((0<=column+x)&&(column+x<10)) && ((0<=row+y)&&(row+y<10))) {
-                if(this.field[row+y][column+x] = 'none'){
+                if(this.field[row+y][column+x] === 'none'){
                 this.field[row+y][column+x] = 'bui';
                 }
             }
