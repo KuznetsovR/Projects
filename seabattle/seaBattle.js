@@ -6,6 +6,7 @@ function createShip(){
     this.coordinatesX=null,
     this.coordinatesY=null,
     this.status= null,
+    this.size= null;
     this.getstatus = function () {
         return this.status;
     },
@@ -41,7 +42,7 @@ function render(id){
         row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
         if(name==='playersField'){
             for (let j=0;j<10;j++) {
-                if (playersField.getStatus(i-1,j)===1){
+                if (playersField.getStatus(playersField, i-1,j)===1){
                     row.insertAdjacentHTML('afterbegin', `<div id='col-1${c}${j}'class='col' style = 'background-color:black; padding-top:8%; border:1px solid black;'></div>`);
                 }else{
                     row.insertAdjacentHTML('afterbegin', `<div id='col-1${c}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
@@ -49,9 +50,9 @@ function render(id){
             }
         } else if (name==='enemyTable'){
             for (let j=0;j<10;j++) {
-                if( enemyTable.getStatus(i-1,j)===3){
+                if( enemyTable.getStatus(enemyTable, i-1,j)===3){
                     row.insertAdjacentHTML('afterbegin', `<div id='col${c}${j}'class='col' style = 'background-color:red; padding-top:8%; border:1px solid black;'></div>`);
-                }else if(enemyTable.getStatus(i-1,j)===4){
+                }else if(enemyTable.getStatus(enemyTable, i-1,j)===4){
                     row.insertAdjacentHTML('afterbegin', `<div id='col${c}${j}'class='col' style = 'background-color:gray; padding-top:8%; border:1px solid black;'></div>`);
                 }else{
                     row.insertAdjacentHTML('afterbegin', `<div id='col${c}${j}'class='col'style= 'padding-top:8%; border:1px solid black;'></div>`);
@@ -70,13 +71,13 @@ function afterRender(id){
     if(name==='playersField'){
             for (let j=0;j<10;j++) {
                 for (let i=0;i<10;i++){
-                    if (playersField.getStatus(i,j)===1){
+                    if (playersField.getStatus(playersField, i,j)===1){
                         let neededPixel = document.getElementById(`col-1${i+1}${9-j}`);
                         neededPixel.style.backgroundColor = 'black';
-                    }else if(playersField.getStatus(i,j)===3){
+                    }else if(playersField.getStatus(playersField, i,j)===3){
                         let neededPixel = document.getElementById(`col-1${i+1}${9-j}`);
                         neededPixel.style.backgroundColor = 'red';
-                    }else if(playersField.getStatus(i,j)===4){
+                    }else if(playersField.getStatus(playersField, i,j)===4){
                         let neededPixel = document.getElementById(`col-1${i+1}${9-j}`);
                         neededPixel.style.backgroundColor = 'gray';
                     }else{
@@ -88,10 +89,10 @@ function afterRender(id){
     } else if (name==='enemyTable'){
             for (let j=0;j<10;j++) {
                 for (let i=0;i<10;i++){
-                    if(enemyTable.getStatus(i,j)===3){
+                    if(enemyTable.getStatus(enemyTable, i,j)===3){
                         let neededPixel = document.getElementById(`col${i+1}${9-j}`);
                         neededPixel.style.backgroundColor = 'red';
-                    }else if(enemyTable.getStatus(i,j)===4){
+                    }else if(enemyTable.getStatus(getStatus, i,j)===4){
                         let neededPixel = document.getElementById(`col${i+1}${9-j}`);
                         neededPixel.style.backgroundColor = 'gray';
                     }else{
@@ -125,11 +126,11 @@ function tableMaker(value){
             }
         }
     },
-    this.getStatus= function(digit, letter){  //digit -row letter - column
-        if (typeof(enemyTable.field[digit][letter])==='object'){
+    this.getStatus= function(table, digit, letter){  //digit -row letter - column
+        if (typeof(table.field[digit][letter])==='object'){
             return 1;
         }else{
-            switch (enemyTable.field[digit][letter]){
+            switch (table.field[digit][letter]){
                 case 'none':
                     return 0;
                 case 'bui':
@@ -141,53 +142,111 @@ function tableMaker(value){
             }
         }
     },
-    this.shipMaker= function(size){          
+    this.shipMaker= function(size){  
+    
         let ship = new createShip();
-        let ship2 = new createShip();
         let column = null;
         let row = null;
         let checker = [ [-1,0], [0,-1], [0,1], [1,0] ];
         let x = 0;
         let y = 0;
-        let a = 0;
         do {
         column = getRandomInt(9);
         row = getRandomInt(9);
-        } while (this.field[row][column] !== 'none');
+        } while (this.getStatus(this, row, column) !== 0);
 
         if (size===1){       
-        this.field[row][column] = ship;
-        ship.coordinatesX = column;
-        ship.coordinatesY = row;
-         return ship;   
-        }/*else if (size===2){
-            do {
-                column = getRandomInt(9);
-                row = getRandomInt(9);
-                    for(let z = 0;z<4;z++){                 //проверка чтобы не выходила за таблицу
-                        x = checker[z][0];     
-                        y = checker[z][1];
-                    }
-            } while (this.field[row][column] !== 'none'&&this.field[row+x][column+y] !== 'none');
             this.field[row][column] = ship;
-            this.field[row+x][column+y] = ship2;
             ship.coordinatesX = column;
             ship.coordinatesY = row;
-        }*/
+            ship.size=size;
+            return ship;   
+        }else{
+            for(let beg=0;beg<1;beg){
+                column = [];
+                row = [];
+                column[0] = getRandomInt(9); 
+                row[0] = getRandomInt(9);              
+                for(let mid=0;mid<10;mid){
+                    let dir = getRandomInt(4);
+                    x = checker[dir][0];     
+                    y = checker[dir][1];
+                    for(let count=0;count<size-1;count) {
+                        if((row[count]+x>=0&&row[count]+x<=9)&&(column[count]+y>=0&&column[count]+y<=9)&&(this.getStatus(this, row[count], column[count]) === 0)&&(this.getStatus(this, (row[count]+x), (column[count]+y)) === 0)){
+                            count++;
+
+                            if (count===size-1){
+                                mid = 10;
+                                beg++;
+                            }
+                        }else{
+                            break;
+                        }
+                    }
+                }
+            }
+            ship.coordinatesX = column;
+            ship.coordinatesY = row;
+            for(shipSetter=0;shipSetter<size;shipSetter++){
+                let neededRow = row[shipSetter];
+                console.log(neededRow);
+                let neededColumn = column[shipSetter]
+                this.field[neededRow][neededColumn] = ship;
+            }
+            ship.size=size;
+            return ship;
+        }
+        /*
         
+        else if (size===2){
+            for(let count=0;count<1;count) {
+                column = getRandomInt(9);
+                row = getRandomInt(9);                
+                    let dir = getRandomInt(4);
+                    x = checker[dir][0];     
+                    y = checker[dir][1];
+                    if((row+x>=0&&row+x<=9)&&(column+y>=0&&column+y<=9)&&(this.getStatus(this, row, column) === 0)&&(this.getStatus(this, (row+x), (column+y)) === 0)){
+                        count++;
+                    }
+            }
+            console.log(row, column, row+x, column+y)
+            this.field[row][column] = ship;
+            ship.coordinatesX = [column];
+            ship.coordinatesY = [row];
+            this.field[row+x][column+y] = ship;
+            ship.coordinatesX.push(column+y);
+            ship.coordinatesY.push(row+x);
+            ship.size = 2;
+            return ship;
+        }*/
     },
     this.buiMaker= function(ship){
         let x = 0;
         let y = 0;
-        let column = ship.coordinatesX;
-        let row = ship.coordinatesY;
-        //console.log(row, column);
-        for(p=0;p<8;p++){
-            x = this.arr[p][0];     
-            y = this.arr[p][1];
-            if (((0<=column+x)&&(column+x<10)) && ((0<=row+y)&&(row+y<10))) {
-                if(this.field[row+y][column+x] === 'none'){
-                this.field[row+y][column+x] = 'bui';
+        if(ship.size===1){
+            let column = ship.coordinatesX;
+            let row = ship.coordinatesY;
+            for(p=0;p<8;p++){
+                x = this.arr[p][0];     
+                y = this.arr[p][1];
+                if (((0<=column+x)&&(column+x<10)) && ((0<=row+y)&&(row+y<10))) {
+                    if(this.field[row+y][column+x] === 'none'){
+                    this.field[row+y][column+x] = 'bui';
+                    }
+                }
+            }
+        }else{
+            for(let sizeCount = 0; sizeCount<ship.size;sizeCount++){
+                let column = ship.coordinatesX[sizeCount];
+                let row = ship.coordinatesY[sizeCount];
+                for(p=0;p<8;p++){
+                    x = this.arr[p][0];     
+                    y = this.arr[p][1];
+                    if (((0<=column+x)&&(column+x<10)) && ((0<=row+y)&&(row+y<10))) {
+                        if(this.field[row+y][column+x] === 'none'){
+                        this.field[row+y][column+x] = 'bui';
+                        }
+                    }
                 }
             }
         }
@@ -198,8 +257,7 @@ function shot(val){
     let letter = val.replace(/[^а-я]/gi, ""); 
     let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
     letter = alphabet.indexOf(letter);
-    let status = enemyTable.getStatus(digit, letter);
-    console.log(status);
+    let status = enemytable.getStatus(enemyTable, digit, letter);
     if (status===1){
         enemyTable.field[digit][letter] = 'killedShip';
     }else{
@@ -217,11 +275,15 @@ for (let p=0;p<4;p++){
 for (let w=0;w<4;w++){
     playersField.buiMaker(playersField.shipMaker(1));
 }
-//playersField.shipMaker(2);
+for (let ship2=0;ship2<3;ship2++){
+    playersField.buiMaker(playersField.shipMaker(2));
+}
+for (let ship2e=0;ship2e<3;ship2e++){
+    enemyTable.buiMaker(enemyTable.shipMaker(2));
+}
 console.log(playersField.field);
 render('enemyTable');
 render('playersField');
-console.log(document.getElementById('shotinput').value)
 let btn = document.getElementById('shot');
 
 btn.onclick = function(){
