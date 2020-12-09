@@ -92,7 +92,7 @@ function afterRender(id){
                     if(enemyTable.getStatus(enemyTable, i,j)===3){
                         let neededPixel = document.getElementById(`col${i+1}${9-j}`);
                         neededPixel.style.backgroundColor = 'red';
-                    }else if(enemyTable.getStatus(getStatus, i,j)===4){
+                    }else if(enemyTable.getStatus(enemyTable, i,j)===4){
                         let neededPixel = document.getElementById(`col${i+1}${9-j}`);
                         neededPixel.style.backgroundColor = 'gray';
                     }else{
@@ -127,7 +127,9 @@ function tableMaker(value){
         }
     },
     this.getStatus= function(table, digit, letter){  //digit -row letter - column
-        if (typeof(table.field[digit][letter])==='object'){
+        if(digit<0||digit>9||letter<0||letter>9){
+            return 'error'
+        }else if (typeof(table.field[digit][letter])==='object'){
             return 1;
         }else{
             switch (table.field[digit][letter]){
@@ -150,9 +152,10 @@ function tableMaker(value){
         let checker = [ [-1,0], [0,-1], [0,1], [1,0] ];
         let x = 0;
         let y = 0;
+        let a = 0;
         do {
-        column = getRandomInt(9);
-        row = getRandomInt(9);
+        column = getRandomInt(10);
+        row = getRandomInt(10);
         } while (this.getStatus(this, row, column) !== 0);
 
         if (size===1){       
@@ -165,36 +168,38 @@ function tableMaker(value){
             for(let beg=0;beg<1;beg){
                 column = [];
                 row = [];
-                column[0] = getRandomInt(9); 
-                row[0] = getRandomInt(9);              
-                for(let mid=0;mid<10;mid){
-                    let dir = getRandomInt(4);
-                    x = checker[dir][0];     
-                    y = checker[dir][1];
-                    for(let count=0;count<size-1;count) {
-                        if((row[count]+x>=0&&row[count]+x<=9)&&(column[count]+y>=0&&column[count]+y<=9)&&(this.getStatus(this, row[count], column[count]) === 0)&&(this.getStatus(this, (row[count]+x), (column[count]+y)) === 0)){
+                do {
+                    column[0] = getRandomInt(10);
+                    row[0] = getRandomInt(10);
+                } while (this.getStatus(this, row[0], column[0]) !== 0);             
+                for(let mid=0;mid<4;mid++){
+                    x = checker[mid][0];     
+                    y = checker[mid][1];
+                    for(let count=1;count<size;count) {
+                        //console.log(this.getStatus(this, (row[count-1]+x), (column[count-1]+y)));
+                        if(this.getStatus(this, (row[count-1]+x), (column[count-1]+y)) === 0){
+                            column[count] = column[count-1] + y;
+                            row[count] = row[count-1] + x;
                             count++;
-
-                            if (count===size-1){
-                                mid = 10;
-                                beg++;
+                            if (count===size){
+                                ship.coordinatesX = column;
+                                ship.coordinatesY = row;
+                                for(let shipSetter=0;shipSetter<size;shipSetter++){
+                                    let neededRow = row[shipSetter];
+                                    let neededColumn = column[shipSetter]
+                                    this.field[neededRow][neededColumn] = ship;
+                                }
+                                ship.size=size;
+                                return ship;
                             }
                         }else{
                             break;
                         }
                     }
                 }
+                
             }
-            ship.coordinatesX = column;
-            ship.coordinatesY = row;
-            for(shipSetter=0;shipSetter<size;shipSetter++){
-                let neededRow = row[shipSetter];
-                console.log(neededRow);
-                let neededColumn = column[shipSetter]
-                this.field[neededRow][neededColumn] = ship;
-            }
-            ship.size=size;
-            return ship;
+            
         }
         /*
         
@@ -257,7 +262,8 @@ function shot(val){
     let letter = val.replace(/[^а-я]/gi, ""); 
     let alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
     letter = alphabet.indexOf(letter);
-    let status = enemytable.getStatus(enemyTable, digit, letter);
+    console.log(enemyTable);
+    let status = enemyTable.getStatus(enemyTable, digit, letter);
     if (status===1){
         enemyTable.field[digit][letter] = 'killedShip';
     }else{
@@ -275,13 +281,23 @@ for (let p=0;p<4;p++){
 for (let w=0;w<4;w++){
     playersField.buiMaker(playersField.shipMaker(1));
 }
+
 for (let ship2=0;ship2<3;ship2++){
     playersField.buiMaker(playersField.shipMaker(2));
 }
 for (let ship2e=0;ship2e<3;ship2e++){
     enemyTable.buiMaker(enemyTable.shipMaker(2));
 }
-console.log(playersField.field);
+for (let ship3=0;ship3<2;ship3++){
+    playersField.buiMaker(playersField.shipMaker(3));
+}
+for (let ship3e=0;ship3e<2;ship3e++){
+    enemyTable.buiMaker(enemyTable.shipMaker(3));
+}
+
+playersField.buiMaker(playersField.shipMaker(4));
+enemyTable.buiMaker(enemyTable.shipMaker(4));
+
 render('enemyTable');
 render('playersField');
 let btn = document.getElementById('shot');
