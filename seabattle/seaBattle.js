@@ -36,7 +36,6 @@ function createShip() {
 function render(id) {
     const place = document.getElementById(id); //document.getElementById("playersField")
     let c = 10;
-    // Эта константа встречается в разных местах, её можно вынести в глобальную константу
     for (let i = 0; i < 12; i++) {
         // Каждый раз, когда ты вызываешь insertAdjacentHTML (или задаешь innerHTML),
         // дерево DOM строится и рендерится заново, что очень затратно.
@@ -47,15 +46,15 @@ function render(id) {
             let alphabetFor = 9;
             for (let t = 0; t < 12; t++) {
                 if (t === 0 || t === 11) {
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-left:1%'></div>`);
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'></div>`);
                 } else {
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-left:1%'>${alphabet[alphabetFor]}</div>`);
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='text-align:center'>${alphabet[alphabetFor]}</div>`);
                     alphabetFor--;
                 }
             }
             continue;
         }
-        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
+        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'>${c}</div>`);
         if (id === 'playersField') {
             for (let j = 0; j < 10; j++) {
                 if (playersField.getStatus(playersField, i - 1, j) === 1) {
@@ -77,15 +76,12 @@ function render(id) {
         } else {
             console.log('error');
         }
-        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
+        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'>${c}</div>`);
         c--;
     }
 }
 
 function afterRender(id) {
-
-    // эта функция вызывается только для enemyTable, так что можно вообще убрать аргумент
-    // и оставить в ней только код во втором условии
     if (id === 'playersField') {
         for (let j = 0; j < 10; j++) {
             for (let i = 0; i < 10; i++) {
