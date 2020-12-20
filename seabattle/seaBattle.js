@@ -46,15 +46,15 @@ function render(id) {
             let alphabetFor = 9;
             for (let t = 0; t < 12; t++) {
                 if (t === 0 || t === 11) {
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'></div>`);
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-left:1%'></div>`);
                 } else {
-                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='text-align:center'>${alphabet[alphabetFor]}</div>`);
+                    row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-left:1%'>${alphabet[alphabetFor]}</div>`);
                     alphabetFor--;
                 }
             }
             continue;
         }
-        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'>${c}</div>`);
+        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
         if (id === 'playersField') {
             for (let j = 0; j < 10; j++) {
                 if (playersField.getStatus(playersField, i - 1, j) === 1) {
@@ -76,7 +76,7 @@ function render(id) {
         } else {
             console.log('error');
         }
-        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col'>${c}</div>`);
+        row.insertAdjacentHTML('afterbegin', `<div id='col${i}'class='col' style='margin-top:1%'>${c}</div>`);
         c--;
     }
 }
@@ -286,10 +286,12 @@ function shot(table, val) {
     }
     letter = alphabet.indexOf(letter);
     let status = table.getStatus(table, digit, letter);
-    if (status === 1) {
+    if (status === 1|| status === 3) {
         table.field[digit][letter] = 'killedShip';
+        return status;
     } else {
         table.field[digit][letter] = 'missedShot';
+        return status;
     }
 }
 
@@ -330,14 +332,17 @@ afterRender('playersField');
 
 let btn = document.getElementById('shot');
 btn.onclick = function () {
-    shot(enemyTable, document.getElementById('shotinput').value);
-    shot(playersField, 'none');
+    let popad = shot(enemyTable, document.getElementById('shotinput').value);
+    if(popad===1){
+        afterRender('enemyTable');
+        return;
+    }else{
+        afterRender('enemyTable');
+    }
+    let popadE = shot(playersField, 'none');
+    while (popadE===1){
+        popadE = shot(playersField, 'none');
+    }
     afterRender('playersField');
-    afterRender('enemyTable');
-    console.log(playersField.field);
+    console.log(enemyTable.field);
 }
-
-/*
-    injured ship
-    killed ship
-*/
