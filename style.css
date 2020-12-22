@@ -1,0 +1,12 @@
+nav .info-Btn{
+    color:black;
+    border:1px solid black;
+}
+nav .info-Btn:hover{
+    color:white;
+    background-color: black;
+}
+.names{
+    font-weight: bolder;
+    font-size: 20px;
+}
