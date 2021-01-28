@@ -24,6 +24,7 @@
 
     <script>
         function render(id){
+            const fragment = new DocumentFragment();
             const table = document.getElementById(id);
             for(let i = 0;i<12;i++){
                 const row = document.createElement(`div`)
@@ -57,7 +58,6 @@
         }
 
 
-        const fragment = new DocumentFragment()
         const alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
         render('playersTable');
         render('enemyTable');
