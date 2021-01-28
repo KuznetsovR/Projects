@@ -19,38 +19,48 @@
     <title>Document</title>
 </head>
 <body>
-    <div id='table' style='width: 80%;margin-left: 10%;'>
+    <div id='playersTable' style='width: 80%;margin-left: 10%;'></div>
+    <div id='enemyTable' style='width: 80%;margin-left: 10%; margin-top: 100px;'></div>
 
-    </div>
     <script>
-        const table = document.getElementById('table')
+        function render(id){
+            const table = document.getElementById(id);
+            for(let i = 0;i<12;i++){
+                const row = document.createElement(`div`)
+                row.classList.add('row');
+                row.classList.add('rows');
+                for(let j=0;j<12;j++){
+                    const col = document.createElement(`div`);
+                    col.classList.add('col');
+                    col.classList.add('cols');
+                    col.classList.add('borders');
+                    col.id = `col${i}-${j}`;
+                    /*
+                    if(id==='enemyTable'&&playersField.getStatus(playersField, i - 1, j) === 1){
+                        col.style.backgroundColor = 'black';
+                    }
+                    */
+                    if(i===0||i===11||j===0||j===11){
+                        col.classList.remove('borders');
+                    }
+                    if(j>0&&j<11&&(i===0||i===11)){
+                        col.textContent = alphabet[j-1];
+                    } 
+                    if(i>0&&i<11&&(j===0||j===11)){
+                        col.textContent = i;
+                    } 
+                    row.appendChild(col)
+                }
+                fragment.appendChild(row)
+            }
+        table.appendChild(fragment)
+        }
+
+
         const fragment = new DocumentFragment()
         const alphabet = 'абвгдежзиклмнопрстуфхцчшщъыьэюя';
-        for(let i = 0;i<12;i++){
-            const row = document.createElement(`div`)
-            row.classList.add('row');
-            row.classList.add('rows');
-            for(let j=0;j<12;j++){
-                const col = document.createElement(`div`);
-                col.classList.add('col');
-                col.classList.add('cols');
-                col.classList.add('borders');
-                col.id = `col${i}-${j}`
-                if(i===0||i===11||j===0||j===11){
-                    col.classList.remove('borders');
-                }
-                if(j>0&&j<11&&(i===0||i===11)){
-                    col.textContent = alphabet[j-1];
-                } 
-                if(i>0&&i<11&&(j===0||j===11)){
-                    col.textContent = i;
-                } 
-                row.appendChild(col)
-            }
-            fragment.appendChild(row)
-            console.log(fragment)
-        }
-        table.appendChild(fragment)
+        render('playersTable');
+        render('enemyTable');
     </script>
 </body>
 </html>
